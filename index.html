@@ -489,12 +489,6 @@ h2 {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
-function bootstrap(){
-  if (typeof THREE === 'undefined' || typeof Peer === 'undefined') {
-    setTimeout(bootstrap, 60); return;
-  }
-  init();
-}
 
 // ============================================================================
 // DATA: skins, colors, options
@@ -1932,6 +1926,13 @@ function init(){
   // Input loop
   inputLoop();
 }
+
+(function bootstrap(){
+  if (typeof THREE === 'undefined' || typeof Peer === 'undefined') {
+    setTimeout(bootstrap, 60); return;
+  }
+  init();
+})();
 </script>
 </body>
 </html>
