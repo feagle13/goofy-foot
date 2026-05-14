@@ -361,6 +361,187 @@ h2 {
   cursor: pointer;
   z-index: 100;
 }
+
+.hide { display: none !important; }
+
+.tab-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  border-bottom: 3px solid var(--black);
+  padding-bottom: 0;
+}
+.tab-btn {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 14px;
+  background: var(--cream);
+  color: var(--black);
+  border: 2px solid var(--black);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  position: relative;
+  top: 3px;
+  transition: background 0.1s;
+}
+.tab-btn:hover { background: var(--white); }
+.tab-btn.active { background: var(--yellow); top: 3px; box-shadow: 0 3px 0 var(--yellow); z-index: 1; }
+.tab-content {
+  padding: 8px 4px;
+  min-height: 200px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.tab-content h3 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 18px;
+  margin: 16px 0 8px;
+  color: var(--black);
+}
+.tab-content h3:first-child { margin-top: 4px; }
+.tab-content p { margin: 8px 0; }
+.tab-content ul, .tab-content ol { margin: 8px 0 8px 22px; line-height: 1.7; }
+.tab-content code { font-family: 'Courier New', monospace; font-size: 13px; }
+.tab-content a { color: var(--orange); font-weight: 600; }
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 6px;
+  border-bottom: 1px dashed var(--gray);
+}
+.setting-row label { font-weight: 600; flex: 1; }
+.setting-control { display: flex; gap: 10px; align-items: center; }
+.setting-row input[type="range"] {
+  -webkit-appearance: none;
+  width: 160px;
+  height: 8px;
+  background: var(--cream);
+  border: 2px solid var(--black);
+  border-radius: 6px;
+  outline: none;
+}
+.setting-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  background: var(--yellow);
+  border: 2px solid var(--black);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--black);
+}
+.setting-row input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--yellow);
+  border: 2px solid var(--black);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.toggle { position: relative; display: inline-block; width: 50px; height: 26px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--cream);
+  border: 2px solid var(--black);
+  border-radius: 14px;
+  transition: 0.15s;
+}
+.toggle-slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background: var(--white);
+  border: 2px solid var(--black);
+  border-radius: 50%;
+  transition: 0.15s;
+}
+.toggle input:checked + .toggle-slider { background: var(--grass); }
+.toggle input:checked + .toggle-slider:before { transform: translateX(22px); background: var(--yellow); }
+.select-in {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 10px;
+  background: var(--white);
+  border: 2px solid var(--black);
+  border-radius: 8px;
+  box-shadow: 2px 2px 0 var(--black);
+  cursor: pointer;
+}
+.muted-small { font-size: 13px; opacity: 0.7; }
+.keys-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.key-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--cream);
+  border: 2px solid var(--black);
+  border-radius: 10px;
+}
+.key-row label { font-weight: 600; }
+.key-btn {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  background: var(--yellow);
+  border: 2px solid var(--black);
+  border-radius: 8px;
+  padding: 6px 14px;
+  min-width: 90px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--black);
+  font-size: 14px;
+}
+.key-btn.listening { background: var(--orange); color: var(--white); animation: pulse 0.6s infinite; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.discord-card {
+  background: linear-gradient(135deg, #5865F2, #4752C4);
+  color: white;
+  border: 3px solid var(--black);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  box-shadow: 4px 4px 0 var(--black);
+  margin-bottom: 18px;
+}
+.discord-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid white;
+}
+.discord-card-info { flex: 1; }
+.discord-card-info b { font-size: 18px; }
+.fps-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.7);
+  color: #0f0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 5;
+}
 </style>
 </head>
 <body>
@@ -371,14 +552,16 @@ h2 {
     <div class="menu-wrap">
       <div style="text-align:center;">
         <h1>Goofy Foot</h1>
-        <div class="subtitle">Le football comme il devrait être</div>
+        <div class="subtitle">⚽ Le foot le plus chaotique du game ⚽</div>
       </div>
       <div class="preview-frame"><canvas id="menu-preview" width="260" height="260" style="display:block;"></canvas></div>
+      <div id="menu-greeting" style="text-align:center; font-weight:600; font-size:15px; min-height:22px; opacity:0.85;"></div>
       <div class="btn-stack">
         <button id="btn-play-online" class="btn primary"><span>⚽ Jouer en ligne</span></button>
         <button id="btn-play-local" class="btn sky"><span>👫 Jouer en local (2 sur 1 clavier)</span></button>
-        <button id="btn-customize" class="btn"><span>🎨 Personnaliser mon perso</span></button>
-        <button id="btn-discord" class="btn" disabled><span>💬 Connexion Discord (bientôt)</span></button>
+        <button id="btn-customize" class="btn"><span>🎨 Customise ta tronche</span></button>
+        <button id="btn-discord-login" class="btn" style="background:#5865F2; color:#fff;"><span>💬 Connexion Discord</span></button>
+        <button id="btn-settings" class="btn"><span>⚙️ Paramètres</span></button>
       </div>
     </div>
   </div>
@@ -462,6 +645,117 @@ h2 {
     </div>
   </div>
 
+  <div id="screen-settings" class="screen">
+    <div class="panel">
+      <div class="row" style="margin-bottom:16px;">
+        <button id="btn-back-settings" class="btn small">← Retour</button>
+        <div class="spacer"></div>
+        <h2>⚙️ Paramètres</h2>
+        <div class="spacer"></div>
+      </div>
+      <div class="tab-bar" id="settings-tabs">
+        <button class="tab-btn active" data-tab="audio">🔊 Audio</button>
+        <button class="tab-btn" data-tab="video">🎥 Vidéo</button>
+        <button class="tab-btn" data-tab="keys">⌨️ Touches</button>
+        <button class="tab-btn" data-tab="help">📖 Comment jouer</button>
+        <button class="tab-btn" data-tab="credits">👥 Crédits</button>
+        <button class="tab-btn" data-tab="discord">💬 Discord</button>
+      </div>
+      <div class="tab-content" id="tab-audio">
+        <div class="setting-row">
+          <label>Volume général</label>
+          <div class="setting-control">
+            <input id="set-volume" type="range" min="0" max="100" value="80">
+            <span id="set-volume-val" style="min-width:36px; text-align:right; font-weight:600;">80</span>
+          </div>
+        </div>
+        <div class="setting-row">
+          <label>Effets de jeu (kicks, but)</label>
+          <div class="setting-control"><label class="toggle"><input id="set-sfx" type="checkbox" checked><span class="toggle-slider"></span></label></div>
+        </div>
+        <div class="setting-row">
+          <label>Sifflet d'arbitre</label>
+          <div class="setting-control"><label class="toggle"><input id="set-whistle" type="checkbox" checked><span class="toggle-slider"></span></label></div>
+        </div>
+      </div>
+      <div class="tab-content hide" id="tab-video">
+        <div class="setting-row">
+          <label>Qualité graphique</label>
+          <div class="setting-control">
+            <select id="set-quality" class="select-in">
+              <option value="low">Bas (60fps facile)</option>
+              <option value="medium" selected>Moyen (recommandé)</option>
+              <option value="high">Élevé (PC qui pète)</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-row">
+          <label>Afficher le FPS pendant le jeu</label>
+          <div class="setting-control"><label class="toggle"><input id="set-showfps" type="checkbox"><span class="toggle-slider"></span></label></div>
+        </div>
+      </div>
+      <div class="tab-content hide" id="tab-keys">
+        <p class="muted-small">Clique sur une touche pour la remapper. Ces touches sont pour ton perso en ligne ou en solo (le mode 2-sur-1-clavier garde ses propres touches).</p>
+        <div class="keys-list" id="keys-list"></div>
+        <button id="btn-reset-keys" class="btn small" style="margin-top:14px;">↺ Réinitialiser par défaut</button>
+      </div>
+      <div class="tab-content hide" id="tab-help">
+        <h3>🎯 Objectif</h3>
+        <p>Mettre la balle dans le but adverse plus de fois que l'adversaire. C'est du foot quoi. Le premier qui marque 1000 buts a gagné (ou tu quittes avant, au choix).</p>
+        <h3>🕹️ Contrôles de base</h3>
+        <ul>
+          <li><b>Bouger</b> : ZQSD / WASD / flèches</li>
+          <li><b>Toucher la balle / Dash</b> : Tape Shift ou Espace (court appui)</li>
+          <li><b>Tir chargé</b> : <b>Maintiens</b> Shift ou Espace, un anneau jaune apparaît au-dessus de ta tête, devient orange puis rouge à fond. Relâche pour shooter avec la puissance accumulée.</li>
+          <li><b>Tacle glissé</b> : Ctrl ou C. Tu plonges en avant, tu peux bousculer les adversaires et envoyer la balle plus fort. Cooldown ~2 secondes.</li>
+          <li><b>Replacer</b> (hôte/local) : R en ligne, Espace en local 2-joueurs</li>
+        </ul>
+        <h3>💡 Astuces</h3>
+        <ul>
+          <li><b>Dribbler</b> : cours simplement vers la balle sans rien presser, elle te suit naturellement.</li>
+          <li><b>Tir chargé proche du but</b> : approche-toi de la balle, charge un coup max, libère. C'est dévastateur.</li>
+          <li><b>Tacle vs Tir chargé</b> : si un adversaire charge un shoot, tacle-le pour interrompre et voler la balle.</li>
+          <li><b>Tacle aérien</b> : en plongeant pendant que la balle vient à toi, ton tacle frappe la balle plus fort qu'une touche normale.</li>
+        </ul>
+        <h3>🌐 Multijoueur</h3>
+        <p>Jusqu'à 8 joueurs (4 vs 4). L'hôte crée une partie et obtient un code à 5 lettres. Les autres tapent ce code pour rejoindre. Les équipes s'équilibrent toutes seules. L'hôte appuie sur "Lancer" quand tout le monde est prêt.</p>
+      </div>
+      <div class="tab-content hide" id="tab-credits">
+        <h3>👑 Crédits</h3>
+        <p style="line-height:1.7;">
+          <b>Goofy Foot</b> — un projet aussi sérieux qu'un panenka en finale.<br><br>
+          <b>Code</b> : toi & Claude, en duo de choc<br>
+          <b>3D & graphismes</b> : <a href="https://threejs.org" target="_blank" rel="noopener" style="color:var(--orange);">Three.js</a> (r128)<br>
+          <b>Multijoueur P2P</b> : <a href="https://peerjs.com" target="_blank" rel="noopener" style="color:var(--orange);">PeerJS</a> (serveur public gratos)<br>
+          <b>Typo</b> : Bungee & Fredoka (Google Fonts)<br>
+          <b>Hosting</b> : GitHub Pages (gratuit, merci Microsoft)<br>
+          <b>Sons</b> : générés en live via Web Audio API (zéro fichier)<br><br>
+          Aucun animal n'a été blessé pendant la fabrication de ce jeu. Quelques claviers ont souffert.<br><br>
+          <i>Si t'as kiffé, partage avec un pote. Si t'as pas kiffé, partage avec deux potes.</i>
+        </p>
+      </div>
+      <div class="tab-content hide" id="tab-discord">
+        <div id="discord-status-area"></div>
+        <div id="discord-config-area">
+          <h3>🔧 Configurer ton Discord</h3>
+          <p class="muted-small">Pour activer la connexion Discord, tu dois créer ton propre app Discord (gratuit, 2 minutes).</p>
+          <ol style="margin:12px 0 12px 22px; line-height:1.7;">
+            <li>Va sur <a href="https://discord.com/developers/applications" target="_blank" rel="noopener" style="color:var(--orange); font-weight:600;">discord.com/developers/applications</a> et clique <b>"New Application"</b>.</li>
+            <li>Donne un nom (genre "Mon Goofy Foot"), accepte les conditions.</li>
+            <li>Dans <b>OAuth2 → General</b>, sous <b>"Redirects"</b>, ajoute exactement l'URL où ce jeu est hébergé. Si t'es en GitHub Pages, c'est <code id="current-url-display" style="background:var(--cream); padding:2px 6px; border-radius:4px;">cette page</code>. Clique Save Changes.</li>
+            <li>Sur la page principale de l'app, copie le <b>"Application ID"</b> (ou "Client ID").</li>
+            <li>Colle-le ici :</li>
+          </ol>
+          <div class="setting-row" style="border:none; padding:0; margin-bottom:12px;">
+            <input id="discord-client-id" type="text" class="txtin" placeholder="ex: 1234567890123456789" style="text-transform:none; font-family:monospace;">
+          </div>
+          <button id="btn-save-discord-id" class="btn small primary">💾 Enregistrer</button>
+          <p class="muted-small" style="margin-top:14px;">Ton Client ID est sauvegardé localement dans ton navigateur. Pas envoyé ailleurs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="screen-game" class="screen">
     <div class="game-shell">
       <div class="row" style="width:100%; max-width:800px;">
@@ -478,6 +772,7 @@ h2 {
       <div class="game-canvas-wrap">
         <canvas id="game-canvas" width="800" height="500" tabindex="0"></canvas>
         <div id="game-flash" class="game-flash">BUT !</div>
+        <div id="fps-overlay" class="fps-overlay hide">-- FPS</div>
       </div>
       <div class="controls-hint" id="controls-hint"></div>
     </div>
@@ -489,6 +784,12 @@ h2 {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
+function bootstrap(){
+  if (typeof THREE === 'undefined' || typeof Peer === 'undefined') {
+    setTimeout(bootstrap, 60); return;
+  }
+  init();
+}
 
 // ============================================================================
 // DATA: skins, colors, options
@@ -512,6 +813,22 @@ let SKIN;
 let activeScreen = 'menu';
 let mode = 'menu'; // 'menu', 'local', 'host', 'client'
 let muted = false;
+
+// Settings + Discord state
+const DEFAULT_SETTINGS = {
+  volume: 80,
+  sfxEnabled: true,
+  whistleEnabled: true,
+  quality: 'medium',
+  showFps: false,
+  keys: { up: 'w', down: 's', left: 'a', right: 'd', shoot: 'Shift', slide: 'c' },
+  discordClientId: '',
+  discordUser: null
+};
+let SETTINGS;
+let audioMasterGain = null;
+let fpsState = { frames: 0, lastTime: 0, current: 0 };
+let keyRemapTarget = null; // when remapping, key action name to bind next
 
 // Multiplayer state
 let peer = null;
@@ -552,10 +869,16 @@ function ensureAudio(){
   if (!audioCtx) {
     try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){}
   }
+  if (audioCtx && !audioMasterGain) {
+    audioMasterGain = audioCtx.createGain();
+    audioMasterGain.gain.value = (SETTINGS ? SETTINGS.volume : 80) / 100;
+    audioMasterGain.connect(audioCtx.destination);
+  }
   if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
 }
+function audioOut(){ return audioMasterGain || (audioCtx ? audioCtx.destination : null); }
 function playKick(power){
-  if (muted || !audioCtx) return;
+  if (muted || !audioCtx || !SETTINGS || !SETTINGS.sfxEnabled) return;
   const t = audioCtx.currentTime;
   const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
   o.type = 'square';
@@ -563,22 +886,22 @@ function playKick(power){
   o.frequency.exponentialRampToValueAtTime(40, t+0.12);
   g.gain.setValueAtTime(0.18 + power*0.12, t);
   g.gain.exponentialRampToValueAtTime(0.001, t+0.12);
-  o.connect(g).connect(audioCtx.destination);
+  o.connect(g).connect(audioOut());
   o.start(t); o.stop(t+0.13);
 }
 function playWhistle(){
-  if (muted || !audioCtx) return;
+  if (muted || !audioCtx || !SETTINGS || !SETTINGS.whistleEnabled) return;
   const t = audioCtx.currentTime;
   const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
   o.type = 'triangle'; o.frequency.value = 1800;
   g.gain.setValueAtTime(0.001, t);
   g.gain.linearRampToValueAtTime(0.15, t+0.05);
   g.gain.linearRampToValueAtTime(0.0001, t+0.3);
-  o.connect(g).connect(audioCtx.destination);
+  o.connect(g).connect(audioOut());
   o.start(t); o.stop(t+0.32);
 }
 function playGoal(){
-  if (muted || !audioCtx) return;
+  if (muted || !audioCtx || !SETTINGS || !SETTINGS.sfxEnabled) return;
   const t0 = audioCtx.currentTime;
   const notes = [523.25, 659.25, 783.99, 1046.5];
   notes.forEach((freq, i) => {
@@ -587,12 +910,12 @@ function playGoal(){
     o.type = 'triangle'; o.frequency.value = freq;
     g.gain.setValueAtTime(0.18, t);
     g.gain.exponentialRampToValueAtTime(0.001, t+0.2);
-    o.connect(g).connect(audioCtx.destination);
+    o.connect(g).connect(audioOut());
     o.start(t); o.stop(t+0.22);
   });
 }
 function playSlide(){
-  if (muted || !audioCtx) return;
+  if (muted || !audioCtx || !SETTINGS || !SETTINGS.sfxEnabled) return;
   const t = audioCtx.currentTime;
   const noise = audioCtx.createBufferSource();
   const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate*0.3, audioCtx.sampleRate);
@@ -601,7 +924,7 @@ function playSlide(){
   noise.buffer = buffer;
   const f = audioCtx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=600;
   const g = audioCtx.createGain(); g.gain.value = 0.12;
-  noise.connect(f).connect(g).connect(audioCtx.destination);
+  noise.connect(f).connect(g).connect(audioOut());
   noise.start(t);
 }
 
@@ -1340,6 +1663,9 @@ function onGoal(team){
   document.getElementById(team === 0 ? 'score-blue' : 'score-red').textContent = gameScores[team];
   gameResetTimer = 70;
   gameButFlash = 70;
+  const msgs = ['BUUUUUT !', 'GOOOOAAAL !', "DANS L'LUCARNE !", 'ZOOOON !', 'C\'EST FOU !', 'MOUSCRON !', 'OH NON ATTENDS', 'PARDONNEZ-LE', 'PROPRE !', "PANENKA !", 'YANNICK !!!'];
+  const flashEl = document.getElementById('game-flash');
+  if (flashEl) flashEl.textContent = msgs[Math.floor(Math.random()*msgs.length)];
   playGoal();
   setTimeout(playWhistle, 200);
   broadcastEvent({ type: 'goal', team });
@@ -1400,6 +1726,7 @@ function gameLoop(){
   if (gameButFlash > 0){ gameButFlash--; fl.style.opacity = Math.min(1, gameButFlash/30); }
   else fl.style.opacity = 0;
   gameRen.render(gameScene, gameCam);
+  updateFps();
   requestAnimationFrame(gameLoop);
 }
 
@@ -1422,13 +1749,14 @@ window.addEventListener('keydown', (e) => {
 window.addEventListener('keyup', (e) => { KEYS[e.key] = false; });
 
 function readLocalInput(){
+  const k = (SETTINGS && SETTINGS.keys) ? SETTINGS.keys : DEFAULT_SETTINGS.keys;
   return {
-    up:    KEYS['z'] || KEYS['w'] || KEYS['Z'] || KEYS['W'] || KEYS['ArrowUp'],
-    down:  KEYS['s'] || KEYS['S'] || KEYS['ArrowDown'],
-    left:  KEYS['q'] || KEYS['a'] || KEYS['Q'] || KEYS['A'] || KEYS['ArrowLeft'],
-    right: KEYS['d'] || KEYS['D'] || KEYS['ArrowRight'],
-    shoot: KEYS['Shift'] || KEYS[' '],
-    slide: KEYS['Control'] || KEYS['c'] || KEYS['C']
+    up:    KEYS[k.up]    || KEYS[k.up.toUpperCase()]    || KEYS['ArrowUp'],
+    down:  KEYS[k.down]  || KEYS[k.down.toUpperCase()]  || KEYS['ArrowDown'],
+    left:  KEYS[k.left]  || KEYS[k.left.toUpperCase()]  || KEYS['ArrowLeft'],
+    right: KEYS[k.right] || KEYS[k.right.toUpperCase()] || KEYS['ArrowRight'],
+    shoot: KEYS[k.shoot] || KEYS[' '],
+    slide: KEYS[k.slide] || KEYS[k.slide.toUpperCase()] || KEYS['Control']
   };
 }
 function readLocal2P_Blue(){
@@ -1860,21 +2188,219 @@ function leaveGame(){
 }
 
 // ============================================================================
+// SETTINGS + DISCORD
+// ============================================================================
+function loadSettings(){
+  try {
+    return Object.assign({}, DEFAULT_SETTINGS, JSON.parse(localStorage.getItem('gf_settings')||'{}'),
+      { keys: Object.assign({}, DEFAULT_SETTINGS.keys, (JSON.parse(localStorage.getItem('gf_settings')||'{}').keys)||{}) }
+    );
+  } catch(e){ return JSON.parse(JSON.stringify(DEFAULT_SETTINGS)); }
+}
+function saveSettings(){
+  try { localStorage.setItem('gf_settings', JSON.stringify(SETTINGS)); } catch(e){}
+}
+function applySettings(){
+  // Audio volume
+  if (audioMasterGain) audioMasterGain.gain.value = SETTINGS.volume / 100;
+  // Video quality affects pixel ratio on game renderer
+  if (gameRen){
+    const dpr = window.devicePixelRatio || 1;
+    let scale = 1;
+    if (SETTINGS.quality === 'low') scale = 0.6;
+    else if (SETTINGS.quality === 'medium') scale = 1;
+    else if (SETTINGS.quality === 'high') scale = Math.min(2, dpr);
+    gameRen.setPixelRatio(scale);
+  }
+  // FPS display
+  const fpsEl = document.getElementById('fps-overlay');
+  if (fpsEl) fpsEl.classList.toggle('hide', !SETTINGS.showFps);
+}
+
+function switchSettingsTab(name){
+  document.querySelectorAll('#settings-tabs .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('hide', c.id !== 'tab-' + name));
+  if (name === 'keys') renderKeysList();
+  if (name === 'discord') renderDiscordTab();
+}
+
+function renderKeysList(){
+  const list = document.getElementById('keys-list');
+  if (!list) return;
+  const labels = {
+    up: 'Avancer',
+    down: 'Reculer',
+    left: 'Gauche',
+    right: 'Droite',
+    shoot: 'Tirer / Charger',
+    slide: 'Tacle glissé'
+  };
+  list.innerHTML = '';
+  for (const action of Object.keys(labels)){
+    const row = document.createElement('div'); row.className = 'key-row';
+    const lbl = document.createElement('label'); lbl.textContent = labels[action];
+    const btn = document.createElement('button'); btn.className = 'key-btn';
+    btn.textContent = displayKey(SETTINGS.keys[action]);
+    btn.addEventListener('click', () => {
+      if (keyRemapTarget) return; // already remapping
+      keyRemapTarget = action;
+      btn.classList.add('listening');
+      btn.textContent = 'Appuie...';
+    });
+    row.appendChild(lbl); row.appendChild(btn);
+    list.appendChild(row);
+  }
+}
+function displayKey(k){
+  if (k === ' ') return 'Espace';
+  if (k === 'Shift') return 'Shift';
+  if (k === 'Control') return 'Ctrl';
+  if (k === 'Enter') return 'Entrée';
+  if (k && k.length === 1) return k.toUpperCase();
+  return k || '?';
+}
+function handleKeyRemap(e){
+  if (!keyRemapTarget) return;
+  if (e.key === 'Escape'){
+    keyRemapTarget = null;
+    renderKeysList();
+    return;
+  }
+  // Don't allow remapping to certain reserved keys
+  if (['Tab', 'F5', 'F12', 'Meta'].includes(e.key)) return;
+  SETTINGS.keys[keyRemapTarget] = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  keyRemapTarget = null;
+  saveSettings();
+  renderKeysList();
+  e.preventDefault();
+}
+
+function renderDiscordTab(){
+  const statusArea = document.getElementById('discord-status-area');
+  const configArea = document.getElementById('discord-config-area');
+  const urlDisp = document.getElementById('current-url-display');
+  if (urlDisp) urlDisp.textContent = window.location.origin + window.location.pathname;
+  const idIn = document.getElementById('discord-client-id');
+  if (idIn) idIn.value = SETTINGS.discordClientId || '';
+  // Status
+  if (SETTINGS.discordUser){
+    const u = SETTINGS.discordUser;
+    const avatarUrl = u.avatar
+      ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=128`
+      : `https://cdn.discordapp.com/embed/avatars/${(parseInt(u.id)>>22) % 6}.png`;
+    statusArea.innerHTML = `
+      <div class="discord-card">
+        <img src="${avatarUrl}" alt="Avatar Discord">
+        <div class="discord-card-info">
+          <b>${escapeHtml(u.username)}</b><br>
+          <span style="opacity:0.8; font-size:13px;">Connecté à Discord</span>
+        </div>
+        <button id="btn-discord-logout" class="btn small danger">Déconnexion</button>
+      </div>
+    `;
+    const lo = document.getElementById('btn-discord-logout');
+    if (lo) lo.addEventListener('click', discordLogout);
+  } else {
+    statusArea.innerHTML = '<p style="margin-bottom:14px;"><i>Pas connecté à Discord pour l\'instant.</i></p>';
+  }
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+function startDiscordLogin(){
+  if (!SETTINGS.discordClientId){
+    showScreen('settings');
+    switchSettingsTab('discord');
+    alert("Avant de te connecter, configure ton Client ID Discord dans Paramètres → Discord. C'est expliqué étape par étape.");
+    return;
+  }
+  const redirectUri = window.location.origin + window.location.pathname;
+  const url = `https://discord.com/api/oauth2/authorize?client_id=${encodeURIComponent(SETTINGS.discordClientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
+  window.location.href = url;
+}
+
+function discordLogout(){
+  SETTINGS.discordUser = null;
+  saveSettings();
+  renderDiscordTab();
+  refreshMenuGreeting();
+}
+
+async function handleDiscordRedirect(){
+  if (!window.location.hash || !window.location.hash.includes('access_token=')) return;
+  try {
+    const params = new URLSearchParams(window.location.hash.substring(1));
+    const token = params.get('access_token');
+    if (!token) return;
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    const r = await fetch('https://discord.com/api/users/@me', { headers: { Authorization: 'Bearer ' + token } });
+    if (!r.ok) return;
+    const u = await r.json();
+    SETTINGS.discordUser = {
+      id: u.id,
+      username: u.global_name || u.username,
+      avatar: u.avatar
+    };
+    if (!SKIN.pseudo || SKIN.pseudo === 'TOI'){
+      SKIN.pseudo = (u.global_name || u.username).toUpperCase().slice(0,10);
+      saveSkin();
+      const pd = document.getElementById('pseudo-display'); if (pd) pd.textContent = SKIN.pseudo;
+    }
+    saveSettings();
+    refreshMenuGreeting();
+  } catch(e){ console.error('Discord auth error', e); }
+}
+
+function refreshMenuGreeting(){
+  const el = document.getElementById('menu-greeting');
+  if (!el) return;
+  if (SETTINGS.discordUser){
+    el.innerHTML = `Salut <b>${escapeHtml(SETTINGS.discordUser.username)}</b>, prêt à faire le clown sur un terrain ?`;
+  } else {
+    const greetings = ["T'es prêt à faire le goofy ?", "Mets tes crampons et tes neurones.", "Le foot mais sans les règles.", "Quelqu'un a vu mon ballon ?"];
+    el.textContent = greetings[Math.floor(Math.random()*greetings.length)];
+  }
+}
+
+function updateFps(){
+  if (!SETTINGS || !SETTINGS.showFps) return;
+  fpsState.frames++;
+  const now = performance.now();
+  if (now - fpsState.lastTime > 500){
+    fpsState.current = Math.round(fpsState.frames / ((now - fpsState.lastTime) / 1000));
+    fpsState.frames = 0;
+    fpsState.lastTime = now;
+    const el = document.getElementById('fps-overlay');
+    if (el) el.textContent = fpsState.current + ' FPS';
+  }
+}
+
+
+// ============================================================================
 // INIT
 // ============================================================================
 function init(){
   SKIN = loadSkin();
+  SETTINGS = loadSettings();
   setupMenuPreview();
   setupCustPreview();
   buildCustomizerUI();
+
+  // Discord OAuth redirect handler (must run before showing menu)
+  handleDiscordRedirect();
+  refreshMenuGreeting();
 
   // Wire menu buttons
   document.getElementById('btn-play-online').addEventListener('click', () => { ensureAudio(); showScreen('lobby-choice'); });
   document.getElementById('btn-play-local').addEventListener('click', () => { ensureAudio(); startLocal2P(); });
   document.getElementById('btn-customize').addEventListener('click', () => showScreen('customizer'));
+  document.getElementById('btn-discord-login').addEventListener('click', () => {
+    if (SETTINGS.discordUser){ showScreen('settings'); switchSettingsTab('discord'); }
+    else startDiscordLogin();
+  });
+  document.getElementById('btn-settings').addEventListener('click', () => { showScreen('settings'); switchSettingsTab('audio'); });
 
   // Customizer
-  document.getElementById('btn-back-cust').addEventListener('click', () => { showScreen('menu'); refreshMenuPreview(); });
+  document.getElementById('btn-back-cust').addEventListener('click', () => { showScreen('menu'); refreshMenuPreview(); refreshMenuGreeting(); });
 
   // Lobby choice
   document.getElementById('btn-back-choice').addEventListener('click', () => showScreen('menu'));
@@ -1910,6 +2436,49 @@ function init(){
     if (e.key === 'Enter') document.getElementById('btn-do-join').click();
   });
 
+  // Settings screen
+  document.getElementById('btn-back-settings').addEventListener('click', () => showScreen('menu'));
+  document.querySelectorAll('#settings-tabs .tab-btn').forEach(b => {
+    b.addEventListener('click', () => switchSettingsTab(b.dataset.tab));
+  });
+  // Audio tab
+  const volSlider = document.getElementById('set-volume');
+  volSlider.value = SETTINGS.volume;
+  document.getElementById('set-volume-val').textContent = SETTINGS.volume;
+  volSlider.addEventListener('input', (e) => {
+    SETTINGS.volume = parseInt(e.target.value);
+    document.getElementById('set-volume-val').textContent = SETTINGS.volume;
+    if (audioMasterGain) audioMasterGain.gain.value = SETTINGS.volume / 100;
+    saveSettings();
+  });
+  const sfxToggle = document.getElementById('set-sfx');
+  sfxToggle.checked = SETTINGS.sfxEnabled;
+  sfxToggle.addEventListener('change', (e) => { SETTINGS.sfxEnabled = e.target.checked; saveSettings(); });
+  const whToggle = document.getElementById('set-whistle');
+  whToggle.checked = SETTINGS.whistleEnabled;
+  whToggle.addEventListener('change', (e) => { SETTINGS.whistleEnabled = e.target.checked; saveSettings(); });
+  // Video tab
+  const qSel = document.getElementById('set-quality');
+  qSel.value = SETTINGS.quality;
+  qSel.addEventListener('change', (e) => { SETTINGS.quality = e.target.value; saveSettings(); applySettings(); });
+  const fpsToggle = document.getElementById('set-showfps');
+  fpsToggle.checked = SETTINGS.showFps;
+  fpsToggle.addEventListener('change', (e) => { SETTINGS.showFps = e.target.checked; saveSettings(); applySettings(); });
+  // Keys tab
+  document.getElementById('btn-reset-keys').addEventListener('click', () => {
+    SETTINGS.keys = JSON.parse(JSON.stringify(DEFAULT_SETTINGS.keys));
+    saveSettings();
+    renderKeysList();
+  });
+  // Discord tab — save button
+  document.getElementById('btn-save-discord-id').addEventListener('click', () => {
+    const v = document.getElementById('discord-client-id').value.trim();
+    SETTINGS.discordClientId = v;
+    saveSettings();
+    const sa = document.getElementById('discord-status-area');
+    sa.innerHTML = '<div class="success-msg">Client ID enregistré. Tu peux maintenant cliquer "Connexion Discord" sur le menu.</div>' + sa.innerHTML;
+  });
+
   // Game
   document.getElementById('btn-leave-game').addEventListener('click', leaveGame);
   document.getElementById('game-canvas').addEventListener('click', () => {
@@ -1923,16 +2492,17 @@ function init(){
     document.getElementById('mute-btn').textContent = muted ? '🔇' : '🔊';
   });
 
+  // Global key listener for remapping
+  window.addEventListener('keydown', handleKeyRemap, true);
+
+  // Apply persistent settings
+  applySettings();
+
   // Input loop
   inputLoop();
 }
 
-(function bootstrap(){
-  if (typeof THREE === 'undefined' || typeof Peer === 'undefined') {
-    setTimeout(bootstrap, 60); return;
-  }
-  init();
-})();
+bootstrap();
 </script>
 </body>
 </html>
