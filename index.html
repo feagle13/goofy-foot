@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Goofy Foot</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='55' r='44' fill='%23FCC419' stroke='%23171717' stroke-width='5'/><path d='M 35 18 Q 50 5 65 18 Q 60 12 50 14 Q 40 12 35 18 Z' fill='%23171717'/><circle cx='38' cy='55' r='8' fill='%23FFFFFF' stroke='%23171717' stroke-width='2'/><circle cx='38' cy='56' r='3.5' fill='%23171717'/><circle cx='62' cy='55' r='8' fill='%23FFFFFF' stroke='%23171717' stroke-width='2'/><circle cx='62' cy='56' r='3.5' fill='%23171717'/><path d='M 32 72 Q 50 88 68 72' stroke='%23171717' stroke-width='5' fill='none' stroke-linecap='round'/><circle cx='26' cy='68' r='4' fill='%23FF8888' opacity='0.75'/><circle cx='74' cy='68' r='4' fill='%23FF8888' opacity='0.75'/></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFF6DC'/><circle cx='50' cy='55' r='42' fill='%23FCC419' stroke='%23171717' stroke-width='5'/><path d='M 35 18 Q 50 5 65 18 Q 60 12 50 14 Q 40 12 35 18 Z' fill='%23171717'/><circle cx='38' cy='55' r='8' fill='%23FFFFFF' stroke='%23171717' stroke-width='2'/><circle cx='38' cy='56' r='3.5' fill='%23171717'/><circle cx='62' cy='55' r='8' fill='%23FFFFFF' stroke='%23171717' stroke-width='2'/><circle cx='62' cy='56' r='3.5' fill='%23171717'/><path d='M 32 72 Q 50 88 68 72' stroke='%23171717' stroke-width='5' fill='none' stroke-linecap='round'/></svg>">
+<meta property="og:title" content="Goofy Foot">
+<meta property="og:description" content="Le foot le plus chaotique du game">
+<meta name="theme-color" content="#FCC419">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1051,6 +1056,21 @@ function bootstrap(){
   }
   init();
 }
+
+// ============================================================================
+// 🔧 ÉDITE ICI : Ton Client ID Discord
+// ============================================================================
+// 1. Va sur https://discord.com/developers/applications
+// 2. New Application → donne un nom (ex: "Goofy Foot")
+// 3. Dans OAuth2 → General → Redirects, ajoute ton URL GitHub Pages
+//    exemple : https://feagle.github.io/goofy-foot/
+//    (l'URL DOIT correspondre EXACTEMENT à où ton site est hébergé)
+// 4. General Information → copie l'Application ID
+// 5. Colle-le entre les guillemets ci-dessous
+// 6. Laisse '' (vide) si tu veux désactiver la connexion Discord
+const DISCORD_CLIENT_ID = '';
+// ============================================================================
+
 
 // ============================================================================
 // DATA: skins, colors, options
