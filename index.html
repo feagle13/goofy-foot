@@ -509,8 +509,8 @@ h2 {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
-.discord-card {
-  background: linear-gradient(135deg, #5865F2, #4752C4);
+.social-card {
+  background: linear-gradient(135deg, var(--orange), var(--red));
   color: white;
   border: 3px solid var(--black);
   border-radius: 14px;
@@ -519,16 +519,109 @@ h2 {
   gap: 14px;
   align-items: center;
   box-shadow: 4px 4px 0 var(--black);
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
-.discord-card img {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  border: 3px solid white;
+.social-card-text { flex: 1; }
+.social-card-text b { font-size: 22px; font-family: 'Bungee', sans-serif; display: block; }
+.social-card-code {
+  background: rgba(0,0,0,0.25);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  display: inline-block;
+  margin-top: 6px;
+  cursor: pointer;
+  font-size: 14px;
 }
-.discord-card-info { flex: 1; }
-.discord-card-info b { font-size: 18px; }
+.social-card-code:hover { background: rgba(0,0,0,0.4); }
+.social-section { margin-top: 18px; }
+.history-list { display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; }
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--cream);
+  border: 2px solid var(--black);
+  border-radius: 10px;
+  font-size: 14px;
+}
+.history-result {
+  font-family: 'Bungee', sans-serif;
+  font-size: 13px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: white;
+  flex-shrink: 0;
+}
+.history-result.win { background: var(--grass); }
+.history-result.loss { background: var(--red); }
+.history-result.draw { background: var(--orange); }
+.history-result.spec { background: #888; }
+.history-score { font-weight: 700; font-family: 'Bungee', sans-serif; }
+.history-date { font-size: 12px; opacity: 0.6; margin-left: auto; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.stat-box {
+  background: var(--cream);
+  border: 2px solid var(--black);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
+.stat-value { font-family: 'Bungee', sans-serif; font-size: 22px; color: var(--orange); }
+.stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; }
+.friends-list { display: flex; flex-direction: column; gap: 6px; }
+.friend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--cream);
+  border: 2px solid var(--black);
+  border-radius: 10px;
+}
+.friend-name { font-weight: 700; flex: 1; }
+.friend-code { font-family: 'Courier New', monospace; font-size: 12px; opacity: 0.7; }
+.btn-rm-friend {
+  background: var(--red);
+  color: white;
+  border: 2px solid var(--black);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.mode-toggle {
+  display: inline-flex;
+  gap: 0;
+  background: var(--cream);
+  border: 3px solid var(--black);
+  border-radius: 14px;
+  padding: 4px;
+  box-shadow: 4px 4px 0 var(--black);
+}
+.mode-btn {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 22px;
+  background: transparent;
+  color: var(--black);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.mode-btn:hover { background: rgba(255,255,255,0.6); }
+.mode-btn.active { background: var(--yellow); border-color: var(--black); }
 .fps-overlay {
   position: absolute;
   top: 10px;
@@ -541,6 +634,38 @@ h2 {
   border-radius: 6px;
   pointer-events: none;
   z-index: 5;
+}
+.commentary-bubble {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translate(-50%, -8px);
+  background: var(--white);
+  border: 3px solid var(--black);
+  border-radius: 14px;
+  padding: 8px 18px;
+  font-family: 'Bungee', sans-serif;
+  font-size: clamp(13px, 1.5vw, 17px);
+  color: var(--black);
+  box-shadow: 4px 4px 0 var(--black);
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.25s;
+  white-space: nowrap;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.commentary-bubble.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.commentary-bubble.show.shake { animation: bubbleShake 0.6s; }
+@keyframes bubbleShake {
+  0%, 100% { transform: translate(-50%, 0) rotate(0); }
+  25% { transform: translate(-52%, -2px) rotate(-2deg); }
+  75% { transform: translate(-48%, 2px) rotate(2deg); }
 }
 </style>
 </head>
@@ -560,7 +685,7 @@ h2 {
         <button id="btn-play-online" class="btn primary"><span>⚽ Jouer en ligne</span></button>
         <button id="btn-play-local" class="btn sky"><span>👫 Jouer en local (2 sur 1 clavier)</span></button>
         <button id="btn-customize" class="btn"><span>🎨 Customise ta tronche</span></button>
-        <button id="btn-discord-login" class="btn" style="background:#5865F2; color:#fff;"><span>💬 Connexion Discord</span></button>
+        <button id="btn-social" class="btn" style="background:var(--orange); color:#fff;"><span>👥 Social</span></button>
         <button id="btn-settings" class="btn"><span>⚙️ Paramètres</span></button>
       </div>
     </div>
@@ -597,6 +722,80 @@ h2 {
       <div style="display:flex; flex-direction:column; gap:14px; max-width:340px; margin:14px auto;">
         <button id="btn-create-lobby" class="btn primary"><span>🎮 Créer une partie</span></button>
         <button id="btn-join-lobby" class="btn sky"><span>🔑 Rejoindre une partie</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-game-setup" class="screen">
+    <div class="panel">
+      <div class="row" style="margin-bottom:16px;">
+        <button id="btn-back-setup" class="btn small">← Retour</button>
+        <div class="spacer"></div>
+        <h2>Configurer ta partie</h2>
+        <div class="spacer"></div>
+      </div>
+      <div style="text-align:center; margin-bottom:18px;">
+        <div style="font-size:13px; opacity:0.7; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em; font-weight:700;">Mode</div>
+        <div class="mode-toggle">
+          <button class="mode-btn active" data-mode="normal">⚡ Normal</button>
+          <button class="mode-btn" data-mode="advanced">🔧 Avancé</button>
+        </div>
+      </div>
+      <div id="setup-advanced-options" style="display:none;">
+        <div class="setting-row">
+          <label>Carte</label>
+          <div class="setting-control">
+            <select id="cfg-map" class="select-in">
+              <option value="classic">Classique 🌱</option>
+              <option value="beach">Plage 🏖️</option>
+              <option value="ice">Glace ❄️</option>
+              <option value="desert">Désert 🏜️</option>
+              <option value="space">Espace 🚀</option>
+              <option value="jungle">Jungle 🌴</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-row">
+          <label>Vitesse</label>
+          <div class="setting-control">
+            <input id="cfg-speed" type="range" min="0.5" max="2" step="0.25" value="1">
+            <span id="cfg-speed-val" style="min-width:42px; text-align:right; font-weight:600;">1x</span>
+          </div>
+        </div>
+        <div class="setting-row">
+          <label>Points pour gagner</label>
+          <div class="setting-control">
+            <select id="cfg-points" class="select-in">
+              <option value="3">3 buts</option>
+              <option value="5" selected>5 buts</option>
+              <option value="10">10 buts</option>
+              <option value="20">20 buts</option>
+              <option value="0">Illimité</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-row">
+          <label>Taille de la balle</label>
+          <div class="setting-control">
+            <select id="cfg-ball" class="select-in">
+              <option value="0.6">Petite (chiante)</option>
+              <option value="1" selected>Normale</option>
+              <option value="1.6">Grande (rigolote)</option>
+              <option value="2.2">ÉNORME (chaotique)</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-row">
+          <label>Public dans les tribunes</label>
+          <div class="setting-control"><label class="toggle"><input id="cfg-crowd" type="checkbox" checked><span class="toggle-slider"></span></label></div>
+        </div>
+        <div class="setting-row">
+          <label>Commentateurs goofy</label>
+          <div class="setting-control"><label class="toggle"><input id="cfg-commentators" type="checkbox" checked><span class="toggle-slider"></span></label></div>
+        </div>
+      </div>
+      <div class="row" style="justify-content:center; margin-top:20px;">
+        <button id="btn-launch-setup" class="btn primary"><span>🚀 Continuer →</span></button>
       </div>
     </div>
   </div>
@@ -659,7 +858,7 @@ h2 {
         <button class="tab-btn" data-tab="keys">⌨️ Touches</button>
         <button class="tab-btn" data-tab="help">📖 Comment jouer</button>
         <button class="tab-btn" data-tab="credits">👥 Crédits</button>
-        <button class="tab-btn" data-tab="discord">💬 Discord</button>
+        <button class="tab-btn" data-tab="social">👥 Social</button>
       </div>
       <div class="tab-content" id="tab-audio">
         <div class="setting-row">
@@ -734,23 +933,24 @@ h2 {
           <i>Si t'as kiffé, partage avec un pote. Si t'as pas kiffé, partage avec deux potes.</i>
         </p>
       </div>
-      <div class="tab-content hide" id="tab-discord">
-        <div id="discord-status-area"></div>
-        <div id="discord-config-area">
-          <h3>🔧 Configurer ton Discord</h3>
-          <p class="muted-small">Pour activer la connexion Discord, tu dois créer ton propre app Discord (gratuit, 2 minutes).</p>
-          <ol style="margin:12px 0 12px 22px; line-height:1.7;">
-            <li>Va sur <a href="https://discord.com/developers/applications" target="_blank" rel="noopener" style="color:var(--orange); font-weight:600;">discord.com/developers/applications</a> et clique <b>"New Application"</b>.</li>
-            <li>Donne un nom (genre "Mon Goofy Foot"), accepte les conditions.</li>
-            <li>Dans <b>OAuth2 → General</b>, sous <b>"Redirects"</b>, ajoute exactement l'URL où ce jeu est hébergé. Si t'es en GitHub Pages, c'est <code id="current-url-display" style="background:var(--cream); padding:2px 6px; border-radius:4px;">cette page</code>. Clique Save Changes.</li>
-            <li>Sur la page principale de l'app, copie le <b>"Application ID"</b> (ou "Client ID").</li>
-            <li>Colle-le ici :</li>
-          </ol>
-          <div class="setting-row" style="border:none; padding:0; margin-bottom:12px;">
-            <input id="discord-client-id" type="text" class="txtin" placeholder="ex: 1234567890123456789" style="text-transform:none; font-family:monospace;">
+      <div class="tab-content hide" id="tab-social">
+        <div id="social-profile-card" class="social-card"></div>
+        <div class="social-section">
+          <h3>📜 Historique de tes parties</h3>
+          <div id="match-history" class="history-list"></div>
+        </div>
+        <div class="social-section">
+          <h3>📊 Tes stats</h3>
+          <div id="player-stats" class="stats-grid"></div>
+        </div>
+        <div class="social-section">
+          <h3>👫 Mes amis</h3>
+          <p class="muted-small">Ajoute tes potes via leur code ami pour les retrouver plus vite. Ils doivent ajouter le tien aussi.</p>
+          <div class="row" style="gap:8px; margin:10px 0;">
+            <input id="friend-code-input" type="text" class="txtin" placeholder="ABCD-1234" style="flex:1; text-transform:uppercase; font-family:'Courier New',monospace;" maxlength="9">
+            <button id="btn-add-friend" class="btn small primary">+ Ajouter</button>
           </div>
-          <button id="btn-save-discord-id" class="btn small primary">💾 Enregistrer</button>
-          <p class="muted-small" style="margin-top:14px;">Ton Client ID est sauvegardé localement dans ton navigateur. Pas envoyé ailleurs.</p>
+          <div id="friends-list" class="friends-list"></div>
         </div>
       </div>
     </div>
@@ -773,6 +973,7 @@ h2 {
         <canvas id="game-canvas" width="800" height="500" tabindex="0"></canvas>
         <div id="game-flash" class="game-flash">BUT !</div>
         <div id="fps-overlay" class="fps-overlay hide">-- FPS</div>
+        <div id="commentary-bubble" class="commentary-bubble"></div>
       </div>
       <div class="controls-hint" id="controls-hint"></div>
     </div>
@@ -805,6 +1006,28 @@ const MUS=['Aucune','Normale','Guidon'];
 const WGS=['Aucunes','Anges','Démon'];
 
 const DEFAULT_SKIN = { pseudo: 'TOI', jerseyIdx: 0, hairIdx: 0, skinIdx: 0, hairStyleIdx: 1, headShapeIdx: 0, hatIdx: 0, glassesIdx: 0, mustacheIdx: 0, wingsIdx: 0 };
+
+// ============================================================================
+// GAME CONFIG + MAPS
+// ============================================================================
+const MAPS = {
+  classic: { name: 'Classique', groundColor: 0x3D9F4E, stripeColor: 0x2A8A42, skyColor: 0x87CEEB, lineColor: 0xffffff, postColor: 0xffffff },
+  beach:   { name: 'Plage',     groundColor: 0xE8C870, stripeColor: 0xD9B85F, skyColor: 0xB0E2F5, lineColor: 0xffffff, postColor: 0xfffaf0 },
+  ice:     { name: 'Glace',     groundColor: 0xC8E6F2, stripeColor: 0xB0D9E8, skyColor: 0xDEEFF6, lineColor: 0x2A5C7C, postColor: 0x2A5C7C },
+  desert:  { name: 'Désert',    groundColor: 0xD9A672, stripeColor: 0xC59866, skyColor: 0xF2D9A8, lineColor: 0xffffff, postColor: 0x654321 },
+  space:   { name: 'Espace',    groundColor: 0x4A3A6E, stripeColor: 0x3E2F5A, skyColor: 0x0E0E2C, lineColor: 0xFCC419, postColor: 0xFCC419 },
+  jungle:  { name: 'Jungle',    groundColor: 0x2D7530, stripeColor: 0x256429, skyColor: 0x6BB48A, lineColor: 0xffffff, postColor: 0x8B5A2B }
+};
+const DEFAULT_GAME_CONFIG = {
+  mode: 'normal',
+  mapId: 'classic',
+  speed: 1.0,
+  pointsTarget: 5,
+  ballSize: 1.0,
+  crowdEnabled: true,
+  commentatorsEnabled: true
+};
+let currentGameConfig = null; // set when host configures or client receives
 
 // ============================================================================
 // STATE
@@ -1299,13 +1522,16 @@ function updateControlsHint(){
 // ============================================================================
 // GAME ENGINE — improved
 // ============================================================================
+let gameFieldMat, gameStripeMat, gameLineMat, gamePostMat, gameNetMat, gameCrowdGroup;
+
 function initGameScene(){
   const canvas = document.getElementById('game-canvas');
   gameRen = new THREE.WebGLRenderer({canvas, antialias:true});
   gameRen.setPixelRatio(window.devicePixelRatio||1);
   gameRen.setSize(800, 500, false);
   gameScene = new THREE.Scene();
-  gameScene.background = new THREE.Color(0x87ceeb);
+  const map = MAPS[currentGameConfig.mapId] || MAPS.classic;
+  gameScene.background = new THREE.Color(map.skyColor);
   gameCam = new THREE.PerspectiveCamera(48, 800/500, 0.5, 600);
   gameCam.position.set(0, 75, 90);
   gameCam.lookAt(0, 0, 0);
@@ -1313,37 +1539,40 @@ function initGameScene(){
   const dl = new THREE.DirectionalLight(0xfff0d0, 0.6);
   dl.position.set(30, 60, 20);
   gameScene.add(dl);
-  const field = new THREE.Mesh(new THREE.PlaneGeometry(FIELD_W, FIELD_D), new THREE.MeshLambertMaterial({color: 0x2e9a4a}));
+  gameFieldMat = new THREE.MeshLambertMaterial({color: map.groundColor});
+  const field = new THREE.Mesh(new THREE.PlaneGeometry(FIELD_W, FIELD_D), gameFieldMat);
   field.rotation.x = -Math.PI/2;
   gameScene.add(field);
-  const stripeMat = new THREE.MeshLambertMaterial({color: 0x2a8a42});
+  gameStripeMat = new THREE.MeshLambertMaterial({color: map.stripeColor});
   for(let i=0; i<8; i++){
     if(i%2===0) continue;
-    const s = new THREE.Mesh(new THREE.PlaneGeometry(FIELD_W/8, FIELD_D), stripeMat);
+    const s = new THREE.Mesh(new THREE.PlaneGeometry(FIELD_W/8, FIELD_D), gameStripeMat);
     s.rotation.x = -Math.PI/2;
     s.position.set(-FIELD_W/2 + (i+0.5)*FIELD_W/8, 0.02, 0);
     gameScene.add(s);
   }
-  const ctr = new THREE.Mesh(new THREE.PlaneGeometry(0.5, FIELD_D), new THREE.MeshBasicMaterial({color: 0xffffff}));
+  gameLineMat = new THREE.MeshBasicMaterial({color: map.lineColor});
+  const ctr = new THREE.Mesh(new THREE.PlaneGeometry(0.5, FIELD_D), gameLineMat);
   ctr.rotation.x = -Math.PI/2; ctr.position.y = 0.05; gameScene.add(ctr);
-  const circ = new THREE.Mesh(new THREE.RingGeometry(12, 12.5, 48), new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide}));
+  const circ = new THREE.Mesh(new THREE.RingGeometry(12, 12.5, 48), new THREE.MeshBasicMaterial({color: map.lineColor, side: THREE.DoubleSide}));
   circ.rotation.x = -Math.PI/2; circ.position.y = 0.05; gameScene.add(circ);
+  gamePostMat = new THREE.MeshLambertMaterial({color: map.postColor});
+  gameNetMat = new THREE.MeshBasicMaterial({color: map.postColor, transparent: true, opacity: 0.25, side: THREE.DoubleSide, wireframe: true});
   [-FIELD_W/2, FIELD_W/2].forEach(xp => {
     const g = new THREE.Group();
-    const pm = new THREE.MeshLambertMaterial({color: 0xffffff});
     const pg = new THREE.CylinderGeometry(0.45, 0.45, 10, 12);
-    const p1 = new THREE.Mesh(pg, pm); p1.position.set(0, 5, -GOAL_HALF); g.add(p1);
-    const p2 = new THREE.Mesh(pg, pm); p2.position.set(0, 5, GOAL_HALF); g.add(p2);
-    const b = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, GOAL_HALF*2, 12), pm);
+    const p1 = new THREE.Mesh(pg, gamePostMat); p1.position.set(0, 5, -GOAL_HALF); g.add(p1);
+    const p2 = new THREE.Mesh(pg, gamePostMat); p2.position.set(0, 5, GOAL_HALF); g.add(p2);
+    const b = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, GOAL_HALF*2, 12), gamePostMat);
     b.rotation.x = Math.PI/2; b.position.set(0, 10, 0); g.add(b);
-    const nm = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.25, side: THREE.DoubleSide, wireframe: true});
-    const net = new THREE.Mesh(new THREE.BoxGeometry(7, 10, GOAL_HALF*2), nm);
+    const net = new THREE.Mesh(new THREE.BoxGeometry(7, 10, GOAL_HALF*2), gameNetMat);
     net.position.set(xp>0 ? 3.5 : -3.5, 5, 0); g.add(net);
     g.position.x = xp;
     gameScene.add(g);
   });
   gameBallMesh = new THREE.Mesh(new THREE.SphereGeometry(1.4, 20, 16), new THREE.MeshLambertMaterial({color: 0xffffff}));
   gameBallMesh.position.y = 1.4;
+  gameBallMesh.scale.setScalar(currentGameConfig.ballSize);
   gameScene.add(gameBallMesh);
   for(let i=0; i<6; i++){
     const sp = new THREE.Mesh(new THREE.SphereGeometry(0.45, 8, 6), new THREE.MeshBasicMaterial({color: 0x111111}));
@@ -1352,12 +1581,146 @@ function initGameScene(){
     sp.position.set(1.4*Math.cos(th)*Math.sin(phi), 1.4*Math.sin(th)*Math.sin(phi), 1.4*Math.cos(phi));
     gameBallMesh.add(sp);
   }
-  gameBall = { x: 0, z: 0, vx: 0, vz: 0, r: 1.4 };
+  gameBall = { x: 0, z: 0, vx: 0, vz: 0, r: 1.4 * currentGameConfig.ballSize };
   gameScores = [0, 0];
   gameResetTimer = 0;
   gameButFlash = 0;
   gameTrails = [];
+  rebuildCrowd();
   gameInitedScene = true;
+}
+
+function applyMap(){
+  if (!gameScene) return;
+  const map = MAPS[currentGameConfig.mapId] || MAPS.classic;
+  gameScene.background = new THREE.Color(map.skyColor);
+  if (gameFieldMat) gameFieldMat.color.setHex(map.groundColor);
+  if (gameStripeMat) gameStripeMat.color.setHex(map.stripeColor);
+  if (gameLineMat) gameLineMat.color.setHex(map.lineColor);
+  if (gamePostMat) gamePostMat.color.setHex(map.postColor);
+  if (gameNetMat) gameNetMat.color.setHex(map.postColor);
+}
+
+function rebuildCrowd(){
+  if (!gameScene) return;
+  if (gameCrowdGroup){ gameScene.remove(gameCrowdGroup); gameCrowdGroup = null; }
+  if (!currentGameConfig || !currentGameConfig.crowdEnabled) return;
+  const map = MAPS[currentGameConfig.mapId] || MAPS.classic;
+  gameCrowdGroup = new THREE.Group();
+  // Stand foundations (two long sides)
+  const standMat = new THREE.MeshLambertMaterial({color: 0xC4B7A6});
+  const standDepth = 16;
+  const standZOffset = FIELD_D/2 + standDepth/2 + 2;
+  for (const sign of [-1, 1]){
+    // 3 rows, ascending heights
+    for (let row = 0; row < 3; row++){
+      const w = FIELD_W + 30;
+      const h = 1.5 + row * 1.4;
+      const dep = standDepth / 3;
+      const stand = new THREE.Mesh(new THREE.BoxGeometry(w, h, dep), standMat);
+      stand.position.set(0, h/2, sign * (FIELD_D/2 + 2 + (row + 0.5) * dep));
+      gameCrowdGroup.add(stand);
+      // Spectators on top of this row
+      const stepZ = sign * (FIELD_D/2 + 2 + (row + 0.5) * dep);
+      const personCount = Math.floor(w / 3.5);
+      for (let i = 0; i < personCount; i++){
+        const x = -w/2 + (i + 0.5) * (w / personCount) + (Math.random()-0.5)*0.8;
+        const personGroup = new THREE.Group();
+        // body
+        const bodyCol = randomBrightColor();
+        const body = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.7, 1.6, 6), new THREE.MeshLambertMaterial({color: bodyCol}));
+        body.position.y = 0.8;
+        personGroup.add(body);
+        // head
+        const skinCol = randomSkinColor();
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.55, 8, 6), new THREE.MeshLambertMaterial({color: skinCol}));
+        head.position.y = 1.95;
+        personGroup.add(head);
+        // hat random
+        if (Math.random() < 0.3){
+          const hatCol = randomBrightColor();
+          const hat = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.65, 0.4, 8), new THREE.MeshLambertMaterial({color: hatCol}));
+          hat.position.y = 2.4;
+          personGroup.add(hat);
+        }
+        personGroup.position.set(x, h, stepZ);
+        personGroup.userData = { baseY: h, bobPhase: Math.random()*Math.PI*2, bobSpeed: 0.8 + Math.random()*0.6, sign: sign };
+        gameCrowdGroup.add(personGroup);
+      }
+    }
+  }
+  gameScene.add(gameCrowdGroup);
+}
+
+function randomBrightColor(){
+  const palette = [0xE14545, 0xFCC419, 0x4FB6E8, 0xF76C1F, 0x3D9F4E, 0x7B3FBF, 0xed5a8f, 0x185FA5];
+  return palette[Math.floor(Math.random()*palette.length)];
+}
+function randomSkinColor(){
+  return SKINS[Math.floor(Math.random()*SKINS.length)].c;
+}
+
+function resizeBall(){
+  if (!gameBallMesh || !currentGameConfig) return;
+  gameBallMesh.scale.setScalar(currentGameConfig.ballSize);
+  gameBall.r = 1.4 * currentGameConfig.ballSize;
+}
+
+function animateCrowd(){
+  if (!gameCrowdGroup) return;
+  const t = performance.now() * 0.003;
+  for (const ch of gameCrowdGroup.children){
+    if (ch.userData && ch.userData.bobPhase !== undefined){
+      ch.position.y = ch.userData.baseY + Math.sin(t * ch.userData.bobSpeed + ch.userData.bobPhase) * 0.2 + 0.2;
+    }
+  }
+}
+
+function endGameByScore(){
+  if (!gameStarted) return;
+  const winner = gameScores[0] > gameScores[1] ? 'BLEUS' : 'ROUGES';
+  const flashEl = document.getElementById('game-flash');
+  if (flashEl){
+    flashEl.textContent = `VICTOIRE DES ${winner} !`;
+    flashEl.style.opacity = 1;
+  }
+  gameButFlash = 240;
+  showCommentary(`Et voilà, les ${winner} ont gagné. Quel suspense incroyable.`, true);
+  recordMatchHistory(gameScores[0], gameScores[1]);
+  if (mode === 'host'){
+    broadcastEvent({ type: 'gameEnd', winner });
+    setTimeout(() => {
+      gameLoopRunning = false;
+      gameStarted = false;
+      showScreen('lobby-host');
+    }, 4500);
+  } else {
+    setTimeout(() => {
+      gameLoopRunning = false;
+      gameStarted = false;
+      showScreen('menu');
+    }, 4500);
+  }
+}
+
+function recordMatchHistory(blueScore, redScore){
+  try {
+    const history = JSON.parse(localStorage.getItem('gf_history')||'[]');
+    const myTeam = players.find(p => p.isLocal)?.team;
+    const won = myTeam === 0 ? blueScore > redScore : (myTeam === 1 ? redScore > blueScore : null);
+    history.unshift({
+      date: Date.now(),
+      blueScore,
+      redScore,
+      mode: mode,
+      mapId: currentGameConfig?.mapId || 'classic',
+      players: players.map(p => ({ pseudo: p.skin?.pseudo || 'JOUEUR', team: p.team })),
+      myTeam,
+      won
+    });
+    while (history.length > 30) history.pop();
+    localStorage.setItem('gf_history', JSON.stringify(history));
+  } catch(e){ console.warn('History save failed', e); }
 }
 
 function buildPlayerObject(skin, team, id, isLocal){
@@ -1512,6 +1875,7 @@ function applyPlayerInput(p, dt){
   else if (p.sliding > 0) maxSp = 1.4;
   else if (p.dashing > 0) maxSp = 1.05;
   else maxSp = 0.5;
+  if (currentGameConfig && currentGameConfig.speed) maxSp *= currentGameConfig.speed;
   const sp = Math.hypot(p.vx, p.vz);
   if (sp > maxSp){ p.vx *= maxSp/sp; p.vz *= maxSp/sp; }
 
@@ -1540,6 +1904,7 @@ function applyPlayerInput(p, dt){
 }
 
 function syncMesh(p){
+  if (!p || !p.mesh || !p.mesh.group) return;
   p.mesh.group.position.set(p.x, 0, p.z);
   p.mesh.group.rotation.y = p.facing;
   const t = performance.now() * 0.012;
@@ -1582,11 +1947,11 @@ function collidePlayerBall(p, b){
   const dx = b.x - p.x, dz = b.z - p.z;
   const d = Math.hypot(dx, dz);
   const minD = p.r + b.r + 0.3;
+  const pSp = Math.hypot(p.vx, p.vz);
   if (d < minD && d > 0.001){
     const nx = dx/d, nz = dz/d;
     b.x = p.x + nx * minD;
     b.z = p.z + nz * minD;
-    const pSp = Math.hypot(p.vx, p.vz);
     let power, kickPower;
     if (p.shootPending > 0){
       power = 2.5 + p.shootPower * 6.5;
@@ -1596,24 +1961,44 @@ function collidePlayerBall(p, b){
       p.shootPending = 0;
       broadcastEvent({ type: 'kick', power: kickPower });
       if (p.isLocal || mode === 'host') playKick(0.5 + kickPower * 0.5);
+      triggerCommentary('shot', kickPower);
     } else if (p.sliding > 0){
       power = 2.8 + pSp * 0.6;
       b.vx = nx * power + p.vx * 0.5;
       b.vz = nz * power + p.vz * 0.5;
       broadcastEvent({ type: 'kick', power: 0.7 });
       if (p.isLocal || mode === 'host') playKick(0.7);
+      triggerCommentary('slide');
     } else if (p.dashing > 0){
       b.vx = nx * 1.6 + p.vx * 0.5;
       b.vz = nz * 1.6 + p.vz * 0.5;
       broadcastEvent({ type: 'kick', power: 0.5 });
       if (p.isLocal || mode === 'host') playKick(0.5);
-    } else if (pSp > 0.12){
-      // Dribble
-      b.vx = p.vx * 0.95 + nx * 0.18;
-      b.vz = p.vz * 0.95 + nz * 0.18;
+    } else if (pSp > 0.05){
+      // Sticky dribble — ball glued to feet
+      const fx = Math.sin(p.facing), fz = Math.cos(p.facing);
+      const targetX = p.x + fx * (p.r + b.r + 0.3);
+      const targetZ = p.z + fz * (p.r + b.r + 0.3);
+      b.x = b.x * 0.25 + targetX * 0.75;
+      b.z = b.z * 0.25 + targetZ * 0.75;
+      b.vx = p.vx;
+      b.vz = p.vz;
     } else {
+      // Static push
       b.vx = nx * 0.35;
       b.vz = nz * 0.35;
+    }
+  } else if (d < minD + 2.5 && d > minD && pSp > 0.08 && p.shootPending === 0 && p.dashing === 0 && p.sliding === 0){
+    // Soft magnetic pull when ball is just outside reach
+    const fx = Math.sin(p.facing), fz = Math.cos(p.facing);
+    const targetX = p.x + fx * (p.r + b.r + 0.3);
+    const targetZ = p.z + fz * (p.r + b.r + 0.3);
+    const ddx = targetX - b.x, ddz = targetZ - b.z;
+    const dd = Math.hypot(ddx, ddz);
+    if (dd > 0.001){
+      const pull = 0.18;
+      b.vx = b.vx * 0.7 + (ddx/dd) * Math.min(dd * 0.4, 0.5) + p.vx * pull;
+      b.vz = b.vz * 0.7 + (ddz/dd) * Math.min(dd * 0.4, 0.5) + p.vz * pull;
     }
   }
 }
@@ -1661,14 +2046,19 @@ function updateBall(b){
 function onGoal(team){
   gameScores[team]++;
   document.getElementById(team === 0 ? 'score-blue' : 'score-red').textContent = gameScores[team];
-  gameResetTimer = 70;
+  gameResetTimer = 90;
   gameButFlash = 70;
   const msgs = ['BUUUUUT !', 'GOOOOAAAL !', "DANS L'LUCARNE !", 'ZOOOON !', 'C\'EST FOU !', 'MOUSCRON !', 'OH NON ATTENDS', 'PARDONNEZ-LE', 'PROPRE !', "PANENKA !", 'YANNICK !!!'];
   const flashEl = document.getElementById('game-flash');
   if (flashEl) flashEl.textContent = msgs[Math.floor(Math.random()*msgs.length)];
   playGoal();
   setTimeout(playWhistle, 200);
+  triggerCommentary('goal');
   broadcastEvent({ type: 'goal', team });
+  // Check win condition
+  if (currentGameConfig && currentGameConfig.pointsTarget > 0 && gameScores[team] >= currentGameConfig.pointsTarget){
+    setTimeout(endGameByScore, 1800);
+  }
 }
 
 function updateTrails(){
@@ -1722,6 +2112,7 @@ function gameLoop(){
   for (const p of players) syncMesh(p);
   renderBall();
   updateTrails();
+  animateCrowd();
   const fl = document.getElementById('game-flash');
   if (gameButFlash > 0){ gameButFlash--; fl.style.opacity = Math.min(1, gameButFlash/30); }
   else fl.style.opacity = 0;
@@ -1820,6 +2211,21 @@ function genCode(){
   return c;
 }
 function peerIdFromCode(code){ return 'goofyfoot-' + code; }
+
+function showGameSetup(){
+  // Reset advanced UI to current or defaults
+  if (!currentGameConfig) currentGameConfig = JSON.parse(JSON.stringify(DEFAULT_GAME_CONFIG));
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'normal'));
+  document.getElementById('setup-advanced-options').style.display = 'none';
+  document.getElementById('cfg-map').value = currentGameConfig.mapId;
+  document.getElementById('cfg-speed').value = currentGameConfig.speed;
+  document.getElementById('cfg-speed-val').textContent = currentGameConfig.speed + 'x';
+  document.getElementById('cfg-points').value = currentGameConfig.pointsTarget;
+  document.getElementById('cfg-ball').value = currentGameConfig.ballSize;
+  document.getElementById('cfg-crowd').checked = currentGameConfig.crowdEnabled;
+  document.getElementById('cfg-commentators').checked = currentGameConfig.commentatorsEnabled;
+  showScreen('game-setup');
+}
 
 function startHost(){
   mode = 'host';
@@ -2025,14 +2431,17 @@ function handleHostMessage(msg){
     players.push({ id: msg.player.id, skin: msg.player.skin, pseudo: msg.player.pseudo, team: msg.player.team });
     refreshClientPlayerList();
   } else if (msg.type === 'playerLeft'){
+    const removed = players.find(p => p.id === msg.id);
+    if (removed && removed.mesh && removed.mesh.group) gameScene.remove(removed.mesh.group);
     players = players.filter(p => p.id !== msg.id);
     refreshClientPlayerList();
     if (gameStarted){
       // We don't have the game-player object on client; will be removed in next state
     }
   } else if (msg.type === 'gameStart'){
+    currentGameConfig = msg.config || JSON.parse(JSON.stringify(DEFAULT_GAME_CONFIG));
     if (!gameInitedScene) initGameScene();
-    else clearGameScene();
+    else { clearGameScene(); applyMap(); rebuildCrowd(); resizeBall(); }
     gameScores = [0, 0];
     document.getElementById('score-blue').textContent = '0';
     document.getElementById('score-red').textContent = '0';
@@ -2046,6 +2455,7 @@ function handleHostMessage(msg){
     players = gamePlayers;
     showScreen('game');
     gameLoopRunning = true;
+    triggerCommentary('start');
     gameLoop();
   } else if (msg.type === 'state'){
     applyRemoteState(msg);
@@ -2074,7 +2484,10 @@ function applyRemoteState(s){
   // Remove players no longer in state
   const ids = new Set(s.players.map(p => p.id));
   players = players.filter(p => {
-    if (!ids.has(p.id)){ gameScene.remove(p.mesh.group); return false; }
+    if (!ids.has(p.id)){
+      if (p && p.mesh && p.mesh.group) gameScene.remove(p.mesh.group);
+      return false;
+    }
     return true;
   });
   gameBall.x = s.ball.x; gameBall.z = s.ball.z;
@@ -2089,8 +2502,34 @@ function applyRemoteState(s){
 }
 
 function handleEvent(evt){
-  if (evt.type === 'goal'){ playGoal(); setTimeout(playWhistle, 200); }
-  else if (evt.type === 'kick'){ playKick(evt.power || 0.5); }
+  if (evt.type === 'goal'){
+    playGoal();
+    setTimeout(playWhistle, 200);
+    triggerCommentary('goal');
+  }
+  else if (evt.type === 'kick'){
+    playKick(evt.power || 0.5);
+    if ((evt.power || 0) > 0.7) triggerCommentary('shotPowerful');
+    else if ((evt.power || 0) > 0.3) triggerCommentary('shot');
+  }
+  else if (evt.type === 'slide'){
+    triggerCommentary('slide');
+  }
+  else if (evt.type === 'start'){
+    triggerCommentary('start');
+  }
+  else if (evt.type === 'gameEnd'){
+    const flashEl = document.getElementById('game-flash');
+    if (flashEl){ flashEl.textContent = `VICTOIRE DES ${evt.winner} !`; flashEl.style.opacity = 1; }
+    gameButFlash = 240;
+    showCommentary(`Et voilà, les ${evt.winner} ont gagné. Quel suspense incroyable.`, true);
+    recordMatchHistory(gameScores[0], gameScores[1]);
+    setTimeout(() => {
+      gameLoopRunning = false;
+      gameStarted = false;
+      showScreen('menu');
+    }, 4500);
+  }
 }
 
 function refreshClientPlayerList(){
@@ -2112,8 +2551,9 @@ function refreshClientPlayerList(){
 // HOST STARTS THE GAME
 function hostStartGame(){
   if (players.length < 1) return;
+  if (!currentGameConfig) currentGameConfig = JSON.parse(JSON.stringify(DEFAULT_GAME_CONFIG));
   if (!gameInitedScene) initGameScene();
-  else clearGameScene();
+  else { clearGameScene(); applyMap(); rebuildCrowd(); resizeBall(); }
   gameScores = [0, 0];
   document.getElementById('score-blue').textContent = '0';
   document.getElementById('score-red').textContent = '0';
@@ -2129,11 +2569,12 @@ function hostStartGame(){
   }
   players = gamePlayers;
   resetPositions();
-  // Tell clients to start
-  broadcastToClients({ type: 'gameStart' });
+  // Tell clients to start with config
+  broadcastToClients({ type: 'gameStart', config: currentGameConfig });
   showScreen('game');
   gameLoopRunning = true;
   playWhistle();
+  triggerCommentary('start');
   gameLoop();
 }
 
@@ -2152,8 +2593,9 @@ function clearGameScene(){
 // LOCAL 2-PLAYER
 function startLocal2P(){
   mode = 'local';
+  if (!currentGameConfig) currentGameConfig = JSON.parse(JSON.stringify(DEFAULT_GAME_CONFIG));
   if (!gameInitedScene) initGameScene();
-  else clearGameScene();
+  else { clearGameScene(); applyMap(); rebuildCrowd(); resizeBall(); }
   gameScores = [0, 0];
   document.getElementById('score-blue').textContent = '0';
   document.getElementById('score-red').textContent = '0';
@@ -2221,7 +2663,7 @@ function switchSettingsTab(name){
   document.querySelectorAll('#settings-tabs .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('hide', c.id !== 'tab-' + name));
   if (name === 'keys') renderKeysList();
-  if (name === 'discord') renderDiscordTab();
+  if (name === 'social') renderSocialTab();
 }
 
 function renderKeysList(){
@@ -2275,90 +2717,193 @@ function handleKeyRemap(e){
   e.preventDefault();
 }
 
-function renderDiscordTab(){
-  const statusArea = document.getElementById('discord-status-area');
-  const configArea = document.getElementById('discord-config-area');
-  const urlDisp = document.getElementById('current-url-display');
-  if (urlDisp) urlDisp.textContent = window.location.origin + window.location.pathname;
-  const idIn = document.getElementById('discord-client-id');
-  if (idIn) idIn.value = SETTINGS.discordClientId || '';
-  // Status
-  if (SETTINGS.discordUser){
-    const u = SETTINGS.discordUser;
-    const avatarUrl = u.avatar
-      ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=128`
-      : `https://cdn.discordapp.com/embed/avatars/${(parseInt(u.id)>>22) % 6}.png`;
-    statusArea.innerHTML = `
-      <div class="discord-card">
-        <img src="${avatarUrl}" alt="Avatar Discord">
-        <div class="discord-card-info">
-          <b>${escapeHtml(u.username)}</b><br>
-          <span style="opacity:0.8; font-size:13px;">Connecté à Discord</span>
-        </div>
-        <button id="btn-discord-logout" class="btn small danger">Déconnexion</button>
-      </div>
-    `;
-    const lo = document.getElementById('btn-discord-logout');
-    if (lo) lo.addEventListener('click', discordLogout);
-  } else {
-    statusArea.innerHTML = '<p style="margin-bottom:14px;"><i>Pas connecté à Discord pour l\'instant.</i></p>';
+function renderSocialTab(){
+  renderSocialProfile();
+  renderMatchHistory();
+  renderPlayerStats();
+  renderFriendsList();
+}
+
+function getOrCreateFriendCode(){
+  let code = localStorage.getItem('gf_friendcode');
+  if (!code){
+    // 4 letters + dash + 4 digits, easy to read
+    const letters = 'BCDFGHJKLMNPQRSTVWXZ';
+    let l = '';
+    for (let i=0; i<4; i++) l += letters[Math.floor(Math.random()*letters.length)];
+    const n = String(Math.floor(1000 + Math.random()*9000));
+    code = l + '-' + n;
+    localStorage.setItem('gf_friendcode', code);
+  }
+  return code;
+}
+
+function renderSocialProfile(){
+  const code = getOrCreateFriendCode();
+  const card = document.getElementById('social-profile-card');
+  if (!card) return;
+  card.innerHTML = `
+    <div class="social-card-text">
+      <b>${escapeHtml(SKIN.pseudo || 'GOOFY')}</b>
+      <div style="font-size:13px; opacity:0.9; margin-top:4px;">Ton code ami :</div>
+      <span class="social-card-code" id="my-friend-code">${escapeHtml(code)}</span>
+    </div>
+  `;
+  const codeEl = document.getElementById('my-friend-code');
+  if (codeEl){
+    codeEl.addEventListener('click', () => {
+      navigator.clipboard?.writeText(code).then(() => {
+        codeEl.textContent = 'Copié !';
+        setTimeout(() => codeEl.textContent = code, 1200);
+      }).catch(()=>{});
+    });
   }
 }
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
 
-function startDiscordLogin(){
-  if (!SETTINGS.discordClientId){
-    showScreen('settings');
-    switchSettingsTab('discord');
-    alert("Avant de te connecter, configure ton Client ID Discord dans Paramètres → Discord. C'est expliqué étape par étape.");
+function renderMatchHistory(){
+  const list = document.getElementById('match-history');
+  if (!list) return;
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('gf_history')||'[]'); } catch(e){}
+  if (!history.length){
+    list.innerHTML = '<p class="muted-small" style="text-align:center; padding:20px;">Aucune partie jouée encore. Lance-toi !</p>';
     return;
   }
-  const redirectUri = window.location.origin + window.location.pathname;
-  const url = `https://discord.com/api/oauth2/authorize?client_id=${encodeURIComponent(SETTINGS.discordClientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
-  window.location.href = url;
-}
-
-function discordLogout(){
-  SETTINGS.discordUser = null;
-  saveSettings();
-  renderDiscordTab();
-  refreshMenuGreeting();
-}
-
-async function handleDiscordRedirect(){
-  if (!window.location.hash || !window.location.hash.includes('access_token=')) return;
-  try {
-    const params = new URLSearchParams(window.location.hash.substring(1));
-    const token = params.get('access_token');
-    if (!token) return;
-    history.replaceState(null, '', window.location.pathname + window.location.search);
-    const r = await fetch('https://discord.com/api/users/@me', { headers: { Authorization: 'Bearer ' + token } });
-    if (!r.ok) return;
-    const u = await r.json();
-    SETTINGS.discordUser = {
-      id: u.id,
-      username: u.global_name || u.username,
-      avatar: u.avatar
-    };
-    if (!SKIN.pseudo || SKIN.pseudo === 'TOI'){
-      SKIN.pseudo = (u.global_name || u.username).toUpperCase().slice(0,10);
-      saveSkin();
-      const pd = document.getElementById('pseudo-display'); if (pd) pd.textContent = SKIN.pseudo;
+  list.innerHTML = '';
+  for (const h of history.slice(0, 15)){
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    let resultClass, resultLabel;
+    if (h.myTeam === null || h.myTeam === undefined){
+      resultClass = 'spec'; resultLabel = 'SPECT';
+    } else if (h.blueScore === h.redScore){
+      resultClass = 'draw'; resultLabel = 'NUL';
+    } else if (h.won){
+      resultClass = 'win'; resultLabel = 'VICTOIRE';
+    } else {
+      resultClass = 'loss'; resultLabel = 'DÉFAITE';
     }
-    saveSettings();
-    refreshMenuGreeting();
-  } catch(e){ console.error('Discord auth error', e); }
+    const mapName = MAPS[h.mapId]?.name || h.mapId;
+    const dateStr = formatRelativeDate(h.date);
+    item.innerHTML = `
+      <span class="history-result ${resultClass}">${resultLabel}</span>
+      <span class="history-score">${h.blueScore}–${h.redScore}</span>
+      <span style="opacity:0.7; font-size:13px;">sur ${escapeHtml(mapName)}</span>
+      <span class="history-date">${dateStr}</span>
+    `;
+    list.appendChild(item);
+  }
 }
+
+function formatRelativeDate(timestamp){
+  const diff = Date.now() - timestamp;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "à l'instant";
+  if (mins < 60) return 'il y a ' + mins + ' min';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return 'il y a ' + hrs + 'h';
+  const days = Math.floor(hrs / 24);
+  if (days < 30) return 'il y a ' + days + 'j';
+  return new Date(timestamp).toLocaleDateString('fr-FR');
+}
+
+function renderPlayerStats(){
+  const ctn = document.getElementById('player-stats');
+  if (!ctn) return;
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('gf_history')||'[]'); } catch(e){}
+  const played = history.length;
+  let wins = 0, losses = 0, draws = 0, goalsFor = 0, goalsAgainst = 0;
+  for (const h of history){
+    if (h.myTeam === null || h.myTeam === undefined) continue;
+    const myScore = h.myTeam === 0 ? h.blueScore : h.redScore;
+    const oppScore = h.myTeam === 0 ? h.redScore : h.blueScore;
+    goalsFor += myScore;
+    goalsAgainst += oppScore;
+    if (myScore > oppScore) wins++;
+    else if (myScore < oppScore) losses++;
+    else draws++;
+  }
+  const winRate = played > 0 ? Math.round(wins/played*100) : 0;
+  ctn.innerHTML = `
+    <div class="stat-box"><div class="stat-value">${played}</div><div class="stat-label">Parties</div></div>
+    <div class="stat-box"><div class="stat-value">${wins}</div><div class="stat-label">Victoires</div></div>
+    <div class="stat-box"><div class="stat-value">${winRate}%</div><div class="stat-label">Win rate</div></div>
+    <div class="stat-box"><div class="stat-value">${goalsFor}</div><div class="stat-label">Buts marqués</div></div>
+    <div class="stat-box"><div class="stat-value">${goalsAgainst}</div><div class="stat-label">Buts encaissés</div></div>
+    <div class="stat-box"><div class="stat-value">${goalsFor - goalsAgainst >= 0 ? '+' : ''}${goalsFor - goalsAgainst}</div><div class="stat-label">Différentiel</div></div>
+  `;
+}
+
+function getFriends(){
+  try { return JSON.parse(localStorage.getItem('gf_friends')||'[]'); } catch(e){ return []; }
+}
+function saveFriends(list){
+  try { localStorage.setItem('gf_friends', JSON.stringify(list)); } catch(e){}
+}
+
+function renderFriendsList(){
+  const list = document.getElementById('friends-list');
+  if (!list) return;
+  const friends = getFriends();
+  if (!friends.length){
+    list.innerHTML = '<p class="muted-small" style="text-align:center; padding:14px;">Pas encore d\'amis. Demande leur code !</p>';
+    return;
+  }
+  list.innerHTML = '';
+  for (const f of friends){
+    const it = document.createElement('div');
+    it.className = 'friend-item';
+    it.innerHTML = `
+      <span class="friend-name">${escapeHtml(f.name)}</span>
+      <span class="friend-code">${escapeHtml(f.code)}</span>
+      <button class="btn-rm-friend" data-code="${escapeHtml(f.code)}">✕</button>
+    `;
+    list.appendChild(it);
+  }
+  list.querySelectorAll('.btn-rm-friend').forEach(b => {
+    b.addEventListener('click', () => {
+      const code = b.dataset.code;
+      const updated = getFriends().filter(f => f.code !== code);
+      saveFriends(updated);
+      renderFriendsList();
+    });
+  });
+}
+
+function addFriendFromInput(){
+  const input = document.getElementById('friend-code-input');
+  let code = input.value.trim().toUpperCase();
+  // accept formats: XXXX-9999 or XXXX9999
+  if (!code.includes('-') && code.length === 8) code = code.slice(0,4) + '-' + code.slice(4);
+  if (!/^[A-Z]{4}-\d{4}$/.test(code)){
+    alert('Format attendu : XXXX-9999 (4 lettres, tiret, 4 chiffres)');
+    return;
+  }
+  if (code === getOrCreateFriendCode()){
+    alert("C'est ton propre code, malin.");
+    return;
+  }
+  const friends = getFriends();
+  if (friends.find(f => f.code === code)){
+    alert('Cet ami est déjà dans ta liste.');
+    return;
+  }
+  const name = prompt('Donne un nom à ton ami pour le retrouver :', code);
+  if (!name) return;
+  friends.push({ code, name: name.slice(0, 20), added: Date.now() });
+  saveFriends(friends);
+  input.value = '';
+  renderFriendsList();
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
 
 function refreshMenuGreeting(){
   const el = document.getElementById('menu-greeting');
   if (!el) return;
-  if (SETTINGS.discordUser){
-    el.innerHTML = `Salut <b>${escapeHtml(SETTINGS.discordUser.username)}</b>, prêt à faire le clown sur un terrain ?`;
-  } else {
-    const greetings = ["T'es prêt à faire le goofy ?", "Mets tes crampons et tes neurones.", "Le foot mais sans les règles.", "Quelqu'un a vu mon ballon ?"];
-    el.textContent = greetings[Math.floor(Math.random()*greetings.length)];
-  }
+  const greetings = ["T'es prêt à faire le goofy ?", "Mets tes crampons et tes neurones.", "Le foot mais sans les règles.", "Quelqu'un a vu mon ballon ?", "Salut Feagle, prêt à dominer ?", "C'est l'heure de courir comme un dingue."];
+  el.textContent = greetings[Math.floor(Math.random()*greetings.length)];
 }
 
 function updateFps(){
@@ -2372,6 +2917,93 @@ function updateFps(){
     const el = document.getElementById('fps-overlay');
     if (el) el.textContent = fpsState.current + ' FPS';
   }
+}
+
+// ============================================================================
+// COMMENTATORS — goofy phrases random per event
+// ============================================================================
+const COMMENTARY = {
+  goal: [
+    "BUUUUUT ! Mais quel cinéma !",
+    "C'EST LA QUINTESSENCE DU FOOT !",
+    "Dans la lulu, à la limite du raisonnable.",
+    "Ça pique les yeux mais ça rentre !",
+    "Yannick, t'as vu ça ? YANNICK ?!",
+    "Le portier est resté chez lui",
+    "BOOOOOM ! Panenka du dimanche",
+    "C'est entré comme dans du beurre tiède",
+    "Mais qu'est-ce qu'il vient de se passer",
+    "Le coach va vomir son sandwich",
+    "Goofy attitude validée par la FIFA",
+    "On marque même en glissant sur une banane",
+    "MAGNIFIQUE ! Je crois.",
+    "C'est plus du foot, c'est de l'art mais bof"
+  ],
+  shot: [
+    "Frappe de bûcheron !",
+    "Ça part comme un missile cassé",
+    "Il a tapé fort, j'espère que ça va",
+    "ÇA SORT DES BRANCARDS",
+    "C'est du Lasso style"
+  ],
+  shotPowerful: [
+    "Frappe NUCLÉAIRE !",
+    "On va le retrouver dans l'espace",
+    "Il a mis 47 chevaux dans son pied",
+    "ÇA VOLE COMME UNE BALEINE",
+    "La balle a peur, regardez-la"
+  ],
+  slide: [
+    "TACLE INTERDIT EN BELGIQUE",
+    "Carton rouge dans son cœur",
+    "Il fait du toboggan en plein match",
+    "Un vrai zoo cette équipe",
+    "On glisse, on glisse, on chausse"
+  ],
+  charge: [
+    "Il charge un coup, j'ai peur",
+    "Concentration MAXIMALE",
+    "L'orage approche...",
+    "Tout le monde se cache !"
+  ],
+  start: [
+    "Bienvenue dans ce match de foot, ou ce qui s'en rapproche",
+    "Ça commence, accrochez-vous",
+    "Le sifflet a sifflé, c'est parti pour le n'importe quoi",
+    "Préparez-vous au pire"
+  ],
+  reset: [
+    "On recommence, comme si de rien n'était",
+    "L'arbitre a décidé que c'était mieux comme ça",
+    "Replacez-vous bande de goofies"
+  ]
+};
+let commentaryLastTime = 0;
+function triggerCommentary(kind, intensity){
+  const now = performance.now();
+  if (now - commentaryLastTime < 1200) return; // prevent spam
+  let pool;
+  if (kind === 'shot' && intensity > 0.7) pool = COMMENTARY.shotPowerful;
+  else pool = COMMENTARY[kind];
+  if (!pool || !pool.length) return;
+  const txt = pool[Math.floor(Math.random()*pool.length)];
+  showCommentary(txt, kind === 'goal');
+  commentaryLastTime = now;
+}
+function showCommentary(text, shake){
+  const el = document.getElementById('commentary-bubble');
+  if (!el) return;
+  el.textContent = text;
+  el.classList.remove('show');
+  el.classList.remove('shake');
+  // Trigger reflow for animation
+  void el.offsetWidth;
+  el.classList.add('show');
+  if (shake) el.classList.add('shake');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => {
+    el.classList.remove('show');
+  }, shake ? 2600 : 1900);
 }
 
 
@@ -2404,7 +3036,7 @@ function init(){
 
   // Lobby choice
   document.getElementById('btn-back-choice').addEventListener('click', () => showScreen('menu'));
-  document.getElementById('btn-create-lobby').addEventListener('click', () => startHost());
+  document.getElementById('btn-create-lobby').addEventListener('click', () => showGameSetup());
   document.getElementById('btn-join-lobby').addEventListener('click', () => { document.getElementById('join-code-input').value=''; document.getElementById('join-status').innerHTML=''; document.getElementById('join-waiting').style.display='none'; showScreen('lobby-join'); });
 
   // Lobby host
@@ -2477,6 +3109,37 @@ function init(){
     saveSettings();
     const sa = document.getElementById('discord-status-area');
     sa.innerHTML = '<div class="success-msg">Client ID enregistré. Tu peux maintenant cliquer "Connexion Discord" sur le menu.</div>' + sa.innerHTML;
+  });
+
+  // Game setup screen
+  document.getElementById('btn-back-setup').addEventListener('click', () => showScreen('lobby-choice'));
+  document.querySelectorAll('.mode-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.mode-btn').forEach(x => x.classList.toggle('active', x === b));
+      const mode = b.dataset.mode;
+      document.getElementById('setup-advanced-options').style.display = mode === 'advanced' ? '' : 'none';
+    });
+  });
+  document.getElementById('cfg-speed').addEventListener('input', (e) => {
+    document.getElementById('cfg-speed-val').textContent = parseFloat(e.target.value).toFixed(2).replace(/\.?0+$/,'') + 'x';
+  });
+  document.getElementById('btn-launch-setup').addEventListener('click', () => {
+    const activeBtn = document.querySelector('.mode-btn.active');
+    const mode = activeBtn ? activeBtn.dataset.mode : 'normal';
+    if (mode === 'normal'){
+      currentGameConfig = JSON.parse(JSON.stringify(DEFAULT_GAME_CONFIG));
+    } else {
+      currentGameConfig = {
+        mode: 'advanced',
+        mapId: document.getElementById('cfg-map').value,
+        speed: parseFloat(document.getElementById('cfg-speed').value),
+        pointsTarget: parseInt(document.getElementById('cfg-points').value),
+        ballSize: parseFloat(document.getElementById('cfg-ball').value),
+        crowdEnabled: document.getElementById('cfg-crowd').checked,
+        commentatorsEnabled: document.getElementById('cfg-commentators').checked
+      };
+    }
+    startHost();
   });
 
   // Game
