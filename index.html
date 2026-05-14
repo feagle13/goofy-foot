@@ -109,6 +109,55 @@ h2 {
   align-items: center;
   gap: 26px;
   padding: 30px 0;
+  position: relative;
+  z-index: 2;
+}
+.menu-decor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.deco {
+  position: absolute;
+  font-size: 32px;
+  opacity: 0.6;
+  animation: floatY 12s linear infinite, swayX 7s ease-in-out infinite;
+  filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.15));
+}
+.deco.d1 { left: 5%;  top: 110%; font-size: 38px; animation-delay: 0s, -0.5s; }
+.deco.d2 { left: 18%; top: 110%; font-size: 26px; animation-delay: -3s, -2s; }
+.deco.d3 { left: 35%; top: 110%; font-size: 44px; animation-delay: -6s, -1s; }
+.deco.d4 { left: 52%; top: 110%; font-size: 30px; animation-delay: -9s, -4s; }
+.deco.d5 { left: 70%; top: 110%; font-size: 36px; animation-delay: -2s, -5s; }
+.deco.d6 { left: 85%; top: 110%; font-size: 28px; animation-delay: -7s, -3s; }
+.deco.d7 { left: 92%; top: 110%; font-size: 40px; animation-delay: -4s, -6s; }
+.deco.d8 { left: 12%; top: 110%; font-size: 32px; animation-delay: -10s, 0s; }
+@keyframes floatY {
+  0%   { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-130vh) rotate(360deg); }
+}
+@keyframes swayX {
+  0%, 100% { margin-left: 0; }
+  50%      { margin-left: 30px; }
+}
+.menu-grass-strip {
+  position: absolute;
+  bottom: -10px;
+  left: -20px;
+  right: -20px;
+  height: 50px;
+  background:
+    radial-gradient(ellipse at 20% 50%, var(--grass) 35%, transparent 36%),
+    radial-gradient(ellipse at 50% 70%, var(--grass) 30%, transparent 31%),
+    radial-gradient(ellipse at 80% 40%, var(--grass) 32%, transparent 33%),
+    var(--grass);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.3;
 }
 .preview-frame {
   width: 260px;
@@ -674,6 +723,16 @@ h2 {
 <div id="app">
 
   <div id="screen-menu" class="screen active">
+    <div class="menu-decor" aria-hidden="true">
+      <span class="deco d1">⚽</span>
+      <span class="deco d2">⭐</span>
+      <span class="deco d3">🏆</span>
+      <span class="deco d4">⚽</span>
+      <span class="deco d5">🎯</span>
+      <span class="deco d6">🥅</span>
+      <span class="deco d7">⚽</span>
+      <span class="deco d8">🐐</span>
+    </div>
     <div class="menu-wrap">
       <div style="text-align:center;">
         <h1>Goofy Foot</h1>
@@ -921,16 +980,17 @@ h2 {
       </div>
       <div class="tab-content hide" id="tab-credits">
         <h3>👑 Crédits</h3>
-        <p style="line-height:1.7;">
-          <b>Goofy Foot</b> — un projet aussi sérieux qu'un panenka en finale.<br><br>
-          <b>Code</b> : toi & Claude, en duo de choc<br>
-          <b>3D & graphismes</b> : <a href="https://threejs.org" target="_blank" rel="noopener" style="color:var(--orange);">Three.js</a> (r128)<br>
-          <b>Multijoueur P2P</b> : <a href="https://peerjs.com" target="_blank" rel="noopener" style="color:var(--orange);">PeerJS</a> (serveur public gratos)<br>
-          <b>Typo</b> : Bungee & Fredoka (Google Fonts)<br>
-          <b>Hosting</b> : GitHub Pages (gratuit, merci Microsoft)<br>
-          <b>Sons</b> : générés en live via Web Audio API (zéro fichier)<br><br>
-          Aucun animal n'a été blessé pendant la fabrication de ce jeu. Quelques claviers ont souffert.<br><br>
-          <i>Si t'as kiffé, partage avec un pote. Si t'as pas kiffé, partage avec deux potes.</i>
+        <p style="line-height:1.8; font-size:15px;">
+          <b>Goofy Foot</b> — un projet aussi sérieux qu'un panenka en finale.
+        </p>
+        <div style="text-align:center; margin:24px 0; padding:24px; background:linear-gradient(135deg, var(--yellow), var(--orange)); border:3px solid var(--black); border-radius:18px; box-shadow:5px 5px 0 var(--black);">
+          <div style="font-family:'Bungee',sans-serif; font-size:36px; color:var(--black); letter-spacing:0.02em;">FEAGLE</div>
+          <div style="font-size:14px; margin-top:6px; color:var(--black); opacity:0.85;">Créateur, designer, joueur n°1, et probablement le meilleur</div>
+        </div>
+        <p style="line-height:1.7; opacity:0.75; font-size:13px; text-align:center;">
+          Aucun animal n'a été blessé pendant la fabrication de ce jeu.<br>
+          Quelques claviers ont souffert.<br><br>
+          <i>Si t'as kiffé, partage avec un pote.<br>Si t'as pas kiffé, partage avec deux potes.</i>
         </p>
       </div>
       <div class="tab-content hide" id="tab-social">
@@ -1037,16 +1097,14 @@ let activeScreen = 'menu';
 let mode = 'menu'; // 'menu', 'local', 'host', 'client'
 let muted = false;
 
-// Settings + Discord state
+// Settings state
 const DEFAULT_SETTINGS = {
   volume: 80,
   sfxEnabled: true,
   whistleEnabled: true,
   quality: 'medium',
   showFps: false,
-  keys: { up: 'w', down: 's', left: 'a', right: 'd', shoot: 'Shift', slide: 'c' },
-  discordClientId: '',
-  discordUser: null
+  keys: { up: 'w', down: 's', left: 'a', right: 'd', shoot: 'Shift', slide: 'c' }
 };
 let SETTINGS;
 let audioMasterGain = null;
@@ -1070,6 +1128,7 @@ let gameRen, gameScene, gameCam, gameBallMesh, gameBall, gameScores, gameResetTi
 let gameTrails = [];
 let gameInitedScene = false;
 let gameLoopRunning = false;
+let gameEnding = false;
 let localInput = { up:false, down:false, left:false, right:false, shoot:false, slide:false }; // boolean key states
 let inputLastSent = JSON.stringify(localInput);
 
@@ -1677,7 +1736,8 @@ function animateCrowd(){
 }
 
 function endGameByScore(){
-  if (!gameStarted) return;
+  if (!gameStarted || gameEnding) return;
+  gameEnding = true;
   const winner = gameScores[0] > gameScores[1] ? 'BLEUS' : 'ROUGES';
   const flashEl = document.getElementById('game-flash');
   if (flashEl){
@@ -2443,6 +2503,7 @@ function handleHostMessage(msg){
     if (!gameInitedScene) initGameScene();
     else { clearGameScene(); applyMap(); rebuildCrowd(); resizeBall(); }
     gameScores = [0, 0];
+    gameEnding = false;
     document.getElementById('score-blue').textContent = '0';
     document.getElementById('score-red').textContent = '0';
     gameStarted = true;
@@ -2555,6 +2616,7 @@ function hostStartGame(){
   if (!gameInitedScene) initGameScene();
   else { clearGameScene(); applyMap(); rebuildCrowd(); resizeBall(); }
   gameScores = [0, 0];
+  gameEnding = false;
   document.getElementById('score-blue').textContent = '0';
   document.getElementById('score-red').textContent = '0';
   gameStarted = true;
@@ -2597,6 +2659,7 @@ function startLocal2P(){
   if (!gameInitedScene) initGameScene();
   else { clearGameScene(); applyMap(); rebuildCrowd(); resizeBall(); }
   gameScores = [0, 0];
+  gameEnding = false;
   document.getElementById('score-blue').textContent = '0';
   document.getElementById('score-red').textContent = '0';
   gameStarted = true;
@@ -2980,6 +3043,7 @@ const COMMENTARY = {
 };
 let commentaryLastTime = 0;
 function triggerCommentary(kind, intensity){
+  if (currentGameConfig && !currentGameConfig.commentatorsEnabled) return;
   const now = performance.now();
   if (now - commentaryLastTime < 1200) return; // prevent spam
   let pool;
@@ -3016,19 +3080,13 @@ function init(){
   setupMenuPreview();
   setupCustPreview();
   buildCustomizerUI();
-
-  // Discord OAuth redirect handler (must run before showing menu)
-  handleDiscordRedirect();
   refreshMenuGreeting();
 
   // Wire menu buttons
   document.getElementById('btn-play-online').addEventListener('click', () => { ensureAudio(); showScreen('lobby-choice'); });
   document.getElementById('btn-play-local').addEventListener('click', () => { ensureAudio(); startLocal2P(); });
   document.getElementById('btn-customize').addEventListener('click', () => showScreen('customizer'));
-  document.getElementById('btn-discord-login').addEventListener('click', () => {
-    if (SETTINGS.discordUser){ showScreen('settings'); switchSettingsTab('discord'); }
-    else startDiscordLogin();
-  });
+  document.getElementById('btn-social').addEventListener('click', () => { showScreen('settings'); switchSettingsTab('social'); });
   document.getElementById('btn-settings').addEventListener('click', () => { showScreen('settings'); switchSettingsTab('audio'); });
 
   // Customizer
@@ -3102,13 +3160,10 @@ function init(){
     saveSettings();
     renderKeysList();
   });
-  // Discord tab — save button
-  document.getElementById('btn-save-discord-id').addEventListener('click', () => {
-    const v = document.getElementById('discord-client-id').value.trim();
-    SETTINGS.discordClientId = v;
-    saveSettings();
-    const sa = document.getElementById('discord-status-area');
-    sa.innerHTML = '<div class="success-msg">Client ID enregistré. Tu peux maintenant cliquer "Connexion Discord" sur le menu.</div>' + sa.innerHTML;
+  // Social tab — add friend
+  document.getElementById('btn-add-friend').addEventListener('click', addFriendFromInput);
+  document.getElementById('friend-code-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') addFriendFromInput();
   });
 
   // Game setup screen
