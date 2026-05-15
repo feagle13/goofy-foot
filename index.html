@@ -1355,7 +1355,7 @@ function bootstrap(){
 // 4. General Information → copie l'Application ID
 // 5. Colle-le entre les guillemets ci-dessous
 // 6. Laisse '' (vide) si tu veux désactiver la connexion Discord
-const DISCORD_CLIENT_ID = '';
+const DISCORD_CLIENT_ID = '1504322101442777238';
 // ============================================================================
 
 
@@ -1437,6 +1437,8 @@ let gameTrails = [];
 let gameInitedScene = false;
 let gameLoopRunning = false;
 let gameEnding = false;
+let allPlayerMeshes = []; // track all player mesh groups for cleanup
+let gameExplosions = []; // goal explosion particles
 let localInput = { up:false, down:false, left:false, right:false, shoot:false, slide:false }; // boolean key states
 let inputLastSent = JSON.stringify(localInput);
 
@@ -2122,6 +2124,78 @@ function addClassicTrees(){
 }
 
 let gameConfetti = [];
+
+function spawnGoalExplosion(team){
+  const xp = team === 0 ? FIELD_W/2 : -FIELD_W/2;
+  // Big flash sphere
+  const flashSphere = new THREE.Mesh(
+    new THREE.SphereGeometry(2.5, 20, 14),
+    new THREE.MeshBasicMaterial({color: 0xFFFFFF, transparent: true, opacity: 1})
+  );
+  flashSphere.position.set(xp, 5, 0);
+  flashSphere.userData = { kind: 'flash', life: 35, maxLife: 35 };
+  gameScene.add(flashSphere);
+  gameExplosions.push(flashSphere);
+  // Bright point light for flash
+  const flashLight = new THREE.PointLight(team === 0 ? 0x4FB6E8 : 0xE14545, 4, 80);
+  flashLight.position.set(xp, 10, 0);
+  flashLight.userData = { kind: 'light', life: 35, maxLife: 35 };
+  gameScene.add(flashLight);
+  gameExplosions.push(flashLight);
+  // Particle burst
+  const colors = team === 0 ? [0x185FA5, 0x4FB6E8, 0xFFFFFF, 0xFCC419] : [0xA32D2D, 0xE14545, 0xFFFFFF, 0xFCC419];
+  for (let i = 0; i < 40; i++){
+    const angle = Math.random() * Math.PI * 2;
+    const angle2 = (Math.random() * 0.7 - 0.1) * Math.PI;
+    const speed = 1.5 + Math.random() * 2;
+    const piece = new THREE.Mesh(
+      new THREE.BoxGeometry(0.7, 0.7, 0.7),
+      new THREE.MeshLambertMaterial({color: colors[i % colors.length]})
+    );
+    piece.position.set(xp, 5, 0);
+    piece.userData = {
+      kind: 'particle',
+      vx: Math.cos(angle) * speed * (team === 0 ? -1 : 1) * Math.cos(angle2),
+      vy: Math.abs(Math.sin(angle2)) * speed + 1.5,
+      vz: Math.sin(angle) * speed,
+      vrx: (Math.random()-0.5) * 0.3,
+      vry: (Math.random()-0.5) * 0.3,
+      life: 70
+    };
+    gameScene.add(piece);
+    gameExplosions.push(piece);
+  }
+}
+
+function updateExplosions(){
+  for (let i = gameExplosions.length - 1; i >= 0; i--){
+    const e = gameExplosions[i];
+    e.userData.life--;
+    if (e.userData.kind === 'flash'){
+      const f = e.userData.life / e.userData.maxLife;
+      e.scale.setScalar(1 + (1-f) * 3.5);
+      e.material.opacity = f;
+    } else if (e.userData.kind === 'light'){
+      const f = e.userData.life / e.userData.maxLife;
+      e.intensity = 4 * f;
+    } else if (e.userData.kind === 'particle'){
+      e.userData.vy -= 0.06;
+      e.position.x += e.userData.vx;
+      e.position.y += e.userData.vy;
+      e.position.z += e.userData.vz;
+      e.rotation.x += e.userData.vrx;
+      e.rotation.y += e.userData.vry;
+      if (e.position.y < 0){ e.position.y = 0; e.userData.vy = 0; e.userData.vx *= 0.6; e.userData.vz *= 0.6; }
+    }
+    if (e.userData.life <= 0){
+      gameScene.remove(e);
+      if (e.geometry) e.geometry.dispose();
+      if (e.material) e.material.dispose();
+      gameExplosions.splice(i, 1);
+    }
+  }
+}
+
 function spawnConfetti(team){
   const xpos = team === 0 ? FIELD_W/2 : -FIELD_W/2;
   const colors = [0xE14545, 0xFCC419, 0x4FB6E8, 0xF76C1F, 0x3D9F4E, 0x7B3FBF, 0xFFFFFF];
@@ -2309,7 +2383,9 @@ function recordMatchHistory(blueScore, redScore){
 
 function buildPlayerObject(skin, team, id, isLocal, profile){
   const mesh = buildCharacter(skin);
+  mesh.group.userData.isPlayerMesh = true;
   gameScene.add(mesh.group);
+  allPlayerMeshes.push(mesh.group);
   const chargeRing = new THREE.Mesh(
     new THREE.TorusGeometry(2.5, 0.35, 8, 24),
     new THREE.MeshBasicMaterial({color: 0xFCC419, transparent: true, opacity: 0.9})
@@ -2668,6 +2744,7 @@ function onGoal(team){
   setTimeout(playWhistle, 200);
   triggerCommentary('goal');
   spawnConfetti(team);
+  spawnGoalExplosion(team);
   shakeCamera(0.6);
   // Identify scorer + show celebration
   const scorer = players.find(p => p.id === gameBall.lastToucher);
@@ -2956,6 +3033,7 @@ function gameLoop(){
   renderBall();
   updateTrails();
   updateConfetti();
+  updateExplosions();
   tickEmotes();
   updatePowerups();
   animateCrowd();
@@ -3170,13 +3248,14 @@ function handleNewClient(conn){
   });
   conn.on('close', () => {
     if (assignedId !== null){
+      const removed = players.find(p => p.id === assignedId);
+      if (removed && removed.mesh && removed.mesh.group){
+        gameScene.remove(removed.mesh.group);
+        const idx = allPlayerMeshes.indexOf(removed.mesh.group);
+        if (idx >= 0) allPlayerMeshes.splice(idx, 1);
+      }
       players = players.filter(p => p.id !== assignedId);
       clientConns = clientConns.filter(c => c.id !== assignedId);
-      // If game running, remove mesh
-      if (gameStarted){
-        const pp = players.find(p => p.id === assignedId);
-        // (already removed from players list; nothing to remove now)
-      }
       broadcastToClients({ type: 'playerLeft', id: assignedId });
       refreshHostPlayerList();
     }
@@ -3288,12 +3367,13 @@ function handleHostMessage(msg){
     refreshClientPlayerList();
   } else if (msg.type === 'playerLeft'){
     const removed = players.find(p => p.id === msg.id);
-    if (removed && removed.mesh && removed.mesh.group) gameScene.remove(removed.mesh.group);
+    if (removed && removed.mesh && removed.mesh.group){
+      gameScene.remove(removed.mesh.group);
+      const idx = allPlayerMeshes.indexOf(removed.mesh.group);
+      if (idx >= 0) allPlayerMeshes.splice(idx, 1);
+    }
     players = players.filter(p => p.id !== msg.id);
     refreshClientPlayerList();
-    if (gameStarted){
-      // We don't have the game-player object on client; will be removed in next state
-    }
   } else if (msg.type === 'gameStart'){
     currentGameConfig = msg.config || JSON.parse(JSON.stringify(DEFAULT_GAME_CONFIG));
     if (!gameInitedScene) initGameScene();
@@ -3328,21 +3408,25 @@ function handleHostMessage(msg){
 function applyRemoteState(s){
   for (const ps of s.players){
     const p = players.find(x => x.id === ps.id);
-    if (p && !p.isLocal){
-      p.x = ps.x; p.z = ps.z; p.facing = ps.facing;
-      p.dashing = ps.dashing; p.sliding = ps.sliding; p.charging = ps.charging; p.chargePower = ps.chargePower || 0;
-      p.vx = ps.vx; p.vz = ps.vz;
-    } else if (p && p.isLocal){
-      // Snap correction (avoid divergence)
-      p.x = ps.x; p.z = ps.z;
-      p.chargePower = ps.chargePower || 0;
-    }
+    if (!p) continue;
+    // Apply all state — both local and remote players
+    p.x = ps.x; p.z = ps.z;
+    p.facing = ps.facing;
+    p.vx = ps.vx; p.vz = ps.vz;
+    p.dashing = ps.dashing;
+    p.sliding = ps.sliding;
+    p.charging = ps.charging;
+    p.chargePower = ps.chargePower || 0;
   }
   // Remove players no longer in state
   const ids = new Set(s.players.map(p => p.id));
   players = players.filter(p => {
     if (!ids.has(p.id)){
-      if (p && p.mesh && p.mesh.group) gameScene.remove(p.mesh.group);
+      if (p && p.mesh && p.mesh.group){
+        gameScene.remove(p.mesh.group);
+        const idx = allPlayerMeshes.indexOf(p.mesh.group);
+        if (idx >= 0) allPlayerMeshes.splice(idx, 1);
+      }
       return false;
     }
     return true;
@@ -3364,6 +3448,7 @@ function handleEvent(evt){
     setTimeout(playWhistle, 200);
     triggerCommentary('goal');
     spawnConfetti(evt.team);
+    spawnGoalExplosion(evt.team);
     shakeCamera(0.6);
     showGoalCelebration(evt.scorerProfile, evt.team, evt.isOwnGoal);
   }
@@ -3448,16 +3533,27 @@ function hostStartGame(){
 
 function clearGameScene(){
   if (!gameScene) return;
-  for (const p of players){
-    if (p.mesh) gameScene.remove(p.mesh.group);
+  // Remove ALL player meshes (including orphans from previous matches)
+  for (const m of allPlayerMeshes){
+    gameScene.remove(m);
   }
+  allPlayerMeshes = [];
   for (const t of gameTrails){
     gameScene.remove(t);
     t.geometry.dispose(); t.material.dispose();
   }
   gameTrails = [];
+  // Clear leftover explosion particles
+  for (const e of gameExplosions){
+    gameScene.remove(e);
+    e.geometry.dispose(); e.material.dispose();
+  }
+  gameExplosions = [];
   clearPowerups();
-  powerupSpawnTimer = 600; // grace period before first spawn
+  powerupSpawnTimer = 600; // grace period
+  // Clear pending goal celebration
+  const ge = document.getElementById('goal-celebration');
+  if (ge) ge.classList.remove('show');
 }
 
 // LOCAL 2-PLAYER
