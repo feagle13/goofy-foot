@@ -564,17 +564,101 @@ h2 {
   50% { opacity: 0.6; }
 }
 .social-card {
-  background: linear-gradient(135deg, var(--orange), var(--red));
-  color: white;
+  position: relative;
   border: 3px solid var(--black);
   border-radius: 14px;
-  padding: 18px;
-  display: flex;
-  gap: 14px;
-  align-items: center;
   box-shadow: 4px 4px 0 var(--black);
   margin-bottom: 22px;
+  overflow: hidden;
+  min-height: 130px;
 }
+.profile-banner-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.profile-content {
+  position: relative;
+  z-index: 1;
+  padding: 18px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  color: white;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}
+.profile-portrait {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  border: 4px solid var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 0 var(--black);
+  overflow: hidden;
+}
+.profile-portrait img { width: 100%; height: 100%; object-fit: cover; }
+.profile-portrait span { line-height: 1; }
+.profile-text { flex: 1; min-width: 0; }
+.profile-name {
+  font-family: 'Bungee', sans-serif;
+  font-size: 24px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.profile-level-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 8px;
+  font-size: 13px;
+}
+.profile-level {
+  background: var(--yellow);
+  color: var(--black);
+  text-shadow: none;
+  font-family: 'Bungee', sans-serif;
+  padding: 2px 8px;
+  border: 2px solid var(--black);
+  border-radius: 6px;
+  font-size: 14px;
+}
+.profile-xp-text { opacity: 0.95; font-size: 12px; }
+.profile-xp-bar {
+  height: 8px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 4px;
+  margin-top: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.4);
+}
+.profile-xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FCC419, #F76C1F);
+  transition: width 0.4s;
+}
+.profile-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 13px;
+}
+.profile-meta .social-card-code {
+  background: rgba(0,0,0,0.25);
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+}
+.profile-meta .social-card-code:hover { background: rgba(0,0,0,0.4); }
 .discord-card {
   background: linear-gradient(135deg, #5865F2, #4752C4);
   color: white;
@@ -682,6 +766,70 @@ h2 {
   cursor: pointer;
   font-family: inherit;
 }
+.shop-header {
+  background: var(--cream);
+  border: 2px solid var(--black);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 600;
+}
+.shop-header b { font-family: 'Bungee', sans-serif; color: var(--orange); }
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
+}
+.shop-card {
+  border: 2px solid var(--black);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 2px 2px 0 var(--black);
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+}
+.shop-card.equipped { outline: 3px solid var(--orange); outline-offset: 2px; }
+.shop-portrait-preview {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  flex-shrink: 0;
+}
+.shop-banner-preview {
+  height: 70px;
+  border-bottom: 2px solid var(--black);
+}
+.shop-card-info {
+  padding: 8px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+}
+.shop-card-name { font-size: 12px; font-weight: 700; opacity: 0.7; }
+.shop-card-btn {
+  width: 100%;
+  padding: 5px 8px;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  border: 2px solid var(--black);
+  border-radius: 6px;
+  cursor: pointer;
+  background: var(--yellow);
+}
+.shop-card-btn.equip { background: var(--sky); color: white; }
+.shop-card-btn.equipped-tag { background: var(--grass); color: white; }
+.shop-card-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.shop-card-btn:hover:not(:disabled) { background: var(--orange); color: white; }
 .mode-toggle {
   display: inline-flex;
   gap: 0;
@@ -749,6 +897,89 @@ h2 {
   0%, 100% { transform: translate(-50%, 0) rotate(0); }
   25% { transform: translate(-52%, -2px) rotate(-2deg); }
   75% { transform: translate(-48%, 2px) rotate(2deg); }
+}
+
+.goal-celeb {
+  position: absolute;
+  top: 50%;
+  right: -100%;
+  transform: translateY(-50%);
+  z-index: 10;
+  pointer-events: none;
+  transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.goal-celeb.show {
+  right: 4%;
+}
+.goal-celeb-card {
+  position: relative;
+  width: 360px;
+  border: 4px solid var(--black);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 8px 8px 0 var(--black);
+}
+.goal-celeb-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.goal-celeb-content {
+  position: relative;
+  z-index: 1;
+  padding: 22px 18px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  color: white;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+}
+.goal-celeb-portrait {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 4px solid var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 0 var(--black);
+  overflow: hidden;
+  animation: portraitBounce 0.7s ease-out;
+}
+.goal-celeb-portrait img { width: 100%; height: 100%; object-fit: cover; }
+@keyframes portraitBounce {
+  0% { transform: scale(0.4) rotate(-15deg); }
+  60% { transform: scale(1.15) rotate(5deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+.goal-celeb-text { flex: 1; min-width: 0; }
+.goal-celeb-bigtitle {
+  font-family: 'Bungee', sans-serif;
+  font-size: 38px;
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+.goal-celeb-pseudo {
+  font-family: 'Bungee', sans-serif;
+  font-size: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.goal-celeb-level {
+  display: inline-block;
+  margin-top: 4px;
+  background: var(--yellow);
+  color: var(--black);
+  text-shadow: none;
+  font-family: 'Bungee', sans-serif;
+  font-size: 14px;
+  padding: 2px 10px;
+  border: 2px solid var(--black);
+  border-radius: 6px;
 }
 </style>
 </head>
@@ -886,6 +1117,10 @@ h2 {
           <label>Commentateurs goofy</label>
           <div class="setting-control"><label class="toggle"><input id="cfg-commentators" type="checkbox" checked><span class="toggle-slider"></span></label></div>
         </div>
+        <div class="setting-row">
+          <label>⚡ Power-ups sur le terrain</label>
+          <div class="setting-control"><label class="toggle"><input id="cfg-powerups" type="checkbox"><span class="toggle-slider"></span></label></div>
+        </div>
       </div>
       <div class="row" style="justify-content:center; margin-top:20px;">
         <button id="btn-launch-setup" class="btn primary"><span>🚀 Continuer →</span></button>
@@ -954,6 +1189,7 @@ h2 {
         <button class="tab-btn" data-tab="help">📖 Comment jouer</button>
         <button class="tab-btn" data-tab="credits">👥 Crédits</button>
         <button class="tab-btn" data-tab="social">👥 Social</button>
+        <button class="tab-btn" data-tab="shop">🛒 Shop</button>
       </div>
       <div class="tab-content" id="tab-audio">
         <div class="setting-row">
@@ -995,24 +1231,33 @@ h2 {
       </div>
       <div class="tab-content hide" id="tab-help">
         <h3>🎯 Objectif</h3>
-        <p>Mettre la balle dans le but adverse plus de fois que l'adversaire. C'est du foot quoi. Le premier qui marque 1000 buts a gagné (ou tu quittes avant, au choix).</p>
+        <p>Mettre la balle dans le but adverse plus de fois que l'adversaire. C'est du foot quoi.</p>
         <h3>🕹️ Contrôles de base</h3>
         <ul>
           <li><b>Bouger</b> : ZQSD / WASD / flèches</li>
           <li><b>Toucher la balle / Dash</b> : Tape Shift ou Espace (court appui)</li>
           <li><b>Tir chargé</b> : <b>Maintiens</b> Shift ou Espace, un anneau jaune apparaît au-dessus de ta tête, devient orange puis rouge à fond. Relâche pour shooter avec la puissance accumulée.</li>
-          <li><b>Tacle glissé</b> : Ctrl ou C. Tu plonges en avant, tu peux bousculer les adversaires et envoyer la balle plus fort. Cooldown ~2 secondes.</li>
+          <li><b>Tacle glissé</b> : Ctrl ou C. Tu plonges en avant, tu peux bousculer les adversaires et envoyer la balle plus fort.</li>
+          <li><b>Émotes</b> : touches <b>1, 2, 3, 4</b> en plein match → 🤡, 👌, 💀, 🔥 au-dessus de ta tête, vus par tout le monde.</li>
           <li><b>Replacer</b> (hôte/local) : R en ligne, Espace en local 2-joueurs</li>
+        </ul>
+        <h3>⚡ Power-ups (mode avancé)</h3>
+        <p>Si l'hôte active les power-ups, des objets spawneront sur le terrain. Marche dessus pour les récupérer :</p>
+        <ul>
+          <li>⚡ <b>Sprint</b> : vitesse x1.6 pendant 4 secondes</li>
+          <li>💣 <b>Méga frappe</b> : ton prochain tir chargé a x1.8 de puissance</li>
+          <li>🧲 <b>Aimant</b> : la balle est aspirée vers toi 4 secondes</li>
+          <li>❄️ <b>Gel</b> : freeze les adversaires pendant 1.5 seconde</li>
         </ul>
         <h3>💡 Astuces</h3>
         <ul>
-          <li><b>Dribbler</b> : cours simplement vers la balle sans rien presser, elle te suit naturellement.</li>
-          <li><b>Tir chargé proche du but</b> : approche-toi de la balle, charge un coup max, libère. C'est dévastateur.</li>
-          <li><b>Tacle vs Tir chargé</b> : si un adversaire charge un shoot, tacle-le pour interrompre et voler la balle.</li>
-          <li><b>Tacle aérien</b> : en plongeant pendant que la balle vient à toi, ton tacle frappe la balle plus fort qu'une touche normale.</li>
+          <li><b>Dribbler</b> : cours simplement vers la balle, elle se colle à tes pieds.</li>
+          <li><b>Tir chargé proche du but</b> : charge max, libère = dévastateur.</li>
+          <li><b>Tacle = anti-charge</b> : si un adversaire charge un shoot, tacle-le pour annuler.</li>
+          <li><b>Profil & coins</b> : tu gagnes des coins en jouant. Achète des portraits/bannières dans le Shop pour stylé ton profil.</li>
         </ul>
         <h3>🌐 Multijoueur</h3>
-        <p>Jusqu'à 8 joueurs (4 vs 4). L'hôte crée une partie et obtient un code à 5 lettres. Les autres tapent ce code pour rejoindre. Les équipes s'équilibrent toutes seules. L'hôte appuie sur "Lancer" quand tout le monde est prêt.</p>
+        <p>Jusqu'à 8 joueurs (4 vs 4). L'hôte crée une partie et obtient un code à 5 lettres. Tes potes tapent ce code ou ouvrent le lien d'invitation. Les équipes s'équilibrent toutes seules.</p>
       </div>
       <div class="tab-content hide" id="tab-credits">
         <h3>👑 Crédits</h3>
@@ -1049,6 +1294,15 @@ h2 {
           </div>
           <div id="friends-list" class="friends-list"></div>
         </div>
+      <div class="tab-content hide" id="tab-shop">
+        <div class="shop-header">
+          <div>🪙 Tu as <b id="shop-coins">0</b> coins</div>
+          <div class="muted-small">Gagne des coins en jouant : +50 par victoire, +25 par but, +15 par défaite.</div>
+        </div>
+        <h3>👤 Portraits</h3>
+        <div class="shop-grid" id="shop-portraits"></div>
+        <h3 style="margin-top:18px;">🎨 Bannières</h3>
+        <div class="shop-grid" id="shop-banners"></div>
       </div>
     </div>
   </div>
@@ -1071,6 +1325,7 @@ h2 {
         <div id="game-flash" class="game-flash">BUT !</div>
         <div id="fps-overlay" class="fps-overlay hide">-- FPS</div>
         <div id="commentary-bubble" class="commentary-bubble"></div>
+        <div id="goal-celebration" class="goal-celeb"></div>
       </div>
       <div class="controls-hint" id="controls-hint"></div>
     </div>
@@ -1100,7 +1355,7 @@ function bootstrap(){
 // 4. General Information → copie l'Application ID
 // 5. Colle-le entre les guillemets ci-dessous
 // 6. Laisse '' (vide) si tu veux désactiver la connexion Discord
-const DISCORD_CLIENT_ID = '1504322101442777238';
+const DISCORD_CLIENT_ID = '';
 // ============================================================================
 
 
@@ -1137,7 +1392,8 @@ const DEFAULT_GAME_CONFIG = {
   pointsTarget: 5,
   ballSize: 1.0,
   crowdEnabled: true,
-  commentatorsEnabled: true
+  commentatorsEnabled: true,
+  powerupsEnabled: false
 };
 let currentGameConfig = null; // set when host configures or client receives
 
@@ -1622,11 +1878,11 @@ function showScreen(name){
 function updateControlsHint(){
   const el = document.getElementById('controls-hint');
   if(mode === 'local'){
-    el.innerHTML = '<b>Bleu</b> ZQSD/WASD · Shift (tap=dash, hold=charge tir) · C=tacle &nbsp;|&nbsp; <b>Rouge</b> Flèches · Entrée · M=tacle &nbsp;·&nbsp; Espace=replacer';
+    el.innerHTML = '<b>Bleu</b> ZQSD/WASD · Shift (tap=dash, hold=charge tir) · C=tacle &nbsp;|&nbsp; <b>Rouge</b> Flèches · Entrée · M=tacle &nbsp;·&nbsp; <b>1-4</b> émotes · Espace=replacer';
   } else if (mode === 'host') {
-    el.innerHTML = '<b>Bouger</b> WASD/ZQSD/Flèches · <b>Shift/Espace</b> tap=touche+dash, maintien=charge tir · <b>Ctrl ou C</b> tacle · R=replacer';
+    el.innerHTML = '<b>Bouger</b> WASD/ZQSD/Flèches · <b>Shift/Espace</b> tap=touche+dash, maintien=charge tir · <b>Ctrl ou C</b> tacle · <b>1-4</b> émotes · R=replacer';
   } else {
-    el.innerHTML = '<b>Bouger</b> WASD/ZQSD/Flèches · <b>Shift/Espace</b> tap=touche+dash, maintien=charge tir · <b>Ctrl ou C</b> tacle glissé';
+    el.innerHTML = '<b>Bouger</b> WASD/ZQSD/Flèches · <b>Shift/Espace</b> tap=touche+dash, maintien=charge tir · <b>Ctrl ou C</b> tacle · <b>1-4</b> émotes';
   }
 }
 
@@ -2021,8 +2277,10 @@ function endGameByScore(){
 function recordMatchHistory(blueScore, redScore){
   try {
     const history = JSON.parse(localStorage.getItem('gf_history')||'[]');
-    const myTeam = players.find(p => p.isLocal)?.team;
+    const myPlayer = players.find(p => p.isLocal);
+    const myTeam = myPlayer?.team ?? null;
     const won = myTeam === 0 ? blueScore > redScore : (myTeam === 1 ? redScore > blueScore : null);
+    const myGoals = myTeam !== null ? (myTeam === 0 ? blueScore : redScore) : 0;
     history.unshift({
       date: Date.now(),
       blueScore,
@@ -2035,10 +2293,21 @@ function recordMatchHistory(blueScore, redScore){
     });
     while (history.length > 30) history.pop();
     localStorage.setItem('gf_history', JSON.stringify(history));
+    // Award XP and coins
+    if (myTeam !== null && PROFILE){
+      let xpGain = 30 + myGoals * 15;
+      let coinGain = 15 + myGoals * 5;
+      if (won === true){ xpGain += 100; coinGain += 50; }
+      else if (won === false){ xpGain += 0; coinGain += 0; }
+      const result = awardXP(xpGain);
+      awardCoins(coinGain);
+      // Could show level up notification — for now just save
+      console.log('Match rewards: +' + xpGain + ' XP, +' + coinGain + ' coins' + (result?.leveledUp ? ' — LEVEL UP!' : ''));
+    }
   } catch(e){ console.warn('History save failed', e); }
 }
 
-function buildPlayerObject(skin, team, id, isLocal){
+function buildPlayerObject(skin, team, id, isLocal, profile){
   const mesh = buildCharacter(skin);
   gameScene.add(mesh.group);
   const chargeRing = new THREE.Mesh(
@@ -2057,6 +2326,7 @@ function buildPlayerObject(skin, team, id, isLocal){
     skin,
     mesh,
     chargeRing,
+    profile,
     x: startX, z: startZ,
     vx: 0, vz: 0,
     r: 3.5,
@@ -2106,6 +2376,18 @@ function spawnTrail(p){
 }
 
 function applyPlayerInput(p, dt){
+  // Frozen?
+  if (p.fx?.freeze > 0){
+    p.fx.freeze--;
+    p.vx *= 0.6; p.vz *= 0.6;
+    p.x += p.vx; p.z += p.vz;
+    // Clamp
+    if (p.x < -FIELD_W/2 + p.r) p.x = -FIELD_W/2 + p.r;
+    if (p.x > FIELD_W/2 - p.r)  p.x = FIELD_W/2 - p.r;
+    if (p.z < -FIELD_D/2 + p.r) p.z = -FIELD_D/2 + p.r;
+    if (p.z > FIELD_D/2 - p.r)  p.z = FIELD_D/2 - p.r;
+    return;
+  }
   // Read input
   const i = p.input;
   let ax = 0, az = 0;
@@ -2191,6 +2473,8 @@ function applyPlayerInput(p, dt){
   else if (p.dashing > 0) maxSp = 1.05;
   else maxSp = 0.5;
   if (currentGameConfig && currentGameConfig.speed) maxSp *= currentGameConfig.speed;
+  if (p.fx?.speed > 0){ maxSp *= 1.6; p.fx.speed--; }
+  if (p.fx?.magnet > 0){ p.fx.magnet--; }
   const sp = Math.hypot(p.vx, p.vz);
   if (sp > maxSp){ p.vx *= maxSp/sp; p.vz *= maxSp/sp; }
 
@@ -2264,15 +2548,18 @@ function collidePlayerBall(p, b){
   const minD = p.r + b.r + 0.3;
   const pSp = Math.hypot(p.vx, p.vz);
   if (d < minD && d > 0.001){
+    b.lastToucher = p.id;
     const nx = dx/d, nz = dz/d;
     b.x = p.x + nx * minD;
     b.z = p.z + nz * minD;
     let power, kickPower;
     if (p.shootPending > 0){
-      power = 2.5 + p.shootPower * 6.5;
+      let mult = 1;
+      if (p.fx?.megakick > 0){ mult = 1.8; p.fx.megakick = 0; }
+      power = (2.5 + p.shootPower * 6.5) * mult;
       b.vx = nx * power + p.vx * 0.4;
       b.vz = nz * power + p.vz * 0.4;
-      kickPower = p.shootPower;
+      kickPower = p.shootPower * mult;
       p.shootPending = 0;
       broadcastEvent({ type: 'kick', power: kickPower });
       if (p.isLocal || mode === 'host') playKick(0.5 + kickPower * 0.5);
@@ -2344,6 +2631,17 @@ function collidePlayers(p1, p2){
 }
 
 function updateBall(b){
+  // Magnet pull: any player with magnet pulls ball
+  for (const p of players){
+    if (p.fx?.magnet > 0 && p.mesh){
+      const dx = p.x - b.x, dz = p.z - b.z;
+      const d = Math.hypot(dx, dz);
+      if (d > 0.5){
+        b.vx += (dx/d) * 0.05;
+        b.vz += (dz/d) * 0.05;
+      }
+    }
+  }
   b.x += b.vx; b.z += b.vz;
   b.vx *= 0.985; b.vz *= 0.985;
   if (b.z < -FIELD_D/2 + b.r){ b.z = -FIELD_D/2 + b.r; b.vz *= -0.75; }
@@ -2361,7 +2659,7 @@ function updateBall(b){
 function onGoal(team){
   gameScores[team]++;
   document.getElementById(team === 0 ? 'score-blue' : 'score-red').textContent = gameScores[team];
-  gameResetTimer = 90;
+  gameResetTimer = 110;
   gameButFlash = 70;
   const msgs = ['BUUUUUT !', 'GOOOOAAAL !', "DANS L'LUCARNE !", 'ZOOOON !', 'C\'EST FOU !', 'MOUSCRON !', 'OH NON ATTENDS', 'PARDONNEZ-LE', 'PROPRE !', "PANENKA !", 'YANNICK !!!'];
   const flashEl = document.getElementById('game-flash');
@@ -2370,10 +2668,240 @@ function onGoal(team){
   setTimeout(playWhistle, 200);
   triggerCommentary('goal');
   spawnConfetti(team);
-  broadcastEvent({ type: 'goal', team });
-  if (currentGameConfig && currentGameConfig.pointsTarget > 0 && gameScores[team] >= currentGameConfig.pointsTarget){
-    setTimeout(endGameByScore, 1800);
+  shakeCamera(0.6);
+  // Identify scorer + show celebration
+  const scorer = players.find(p => p.id === gameBall.lastToucher);
+  let scorerProfile = null;
+  let isOwnGoal = false;
+  if (scorer){
+    scorerProfile = scorer.profile || buildProfileForPlayer(scorer);
+    isOwnGoal = scorer.team !== team;
   }
+  showGoalCelebration(scorerProfile, team, isOwnGoal);
+  broadcastEvent({ type: 'goal', team, scorerProfile, isOwnGoal });
+  gameBall.lastToucher = null;
+  if (currentGameConfig && currentGameConfig.pointsTarget > 0 && gameScores[team] >= currentGameConfig.pointsTarget){
+    setTimeout(endGameByScore, 2200);
+  }
+}
+
+function buildProfileForPlayer(p){
+  // For the host's own player, use PROFILE. For others, use stored profile.
+  if (p.isLocal && PROFILE){
+    return buildProfileSnapshot();
+  }
+  return p.profile || { pseudo: p.skin?.pseudo || 'JOUEUR', portraitId: 'goat', bannerId: 'orange', level: 1 };
+}
+
+function showGoalCelebration(profile, scoringTeam, isOwnGoal){
+  const overlay = document.getElementById('goal-celebration');
+  if (!overlay) return;
+  if (!profile){
+    profile = { pseudo: scoringTeam === 0 ? 'BLEUS' : 'ROUGES', portraitId: 'goat', bannerId: scoringTeam === 0 ? 'sky' : 'fire', level: 0 };
+  }
+  const banner = getBanner(profile.bannerId);
+  const portrait = getPortrait(profile.portraitId);
+  const avatarContent = profile.discordAvatar
+    ? `<img src="${escapeHtml(profile.discordAvatar)}" alt="">`
+    : `<span>${portrait.emoji}</span>`;
+  const titleTxt = isOwnGoal ? "CSC !" : "BUUUT !";
+  overlay.innerHTML = `
+    <div class="goal-celeb-card">
+      <div class="goal-celeb-bg" style="background: ${banner.css};"></div>
+      <div class="goal-celeb-content">
+        <div class="goal-celeb-portrait" style="background: ${portrait.bg};">${avatarContent}</div>
+        <div class="goal-celeb-text">
+          <div class="goal-celeb-bigtitle">${titleTxt}</div>
+          <div class="goal-celeb-pseudo">${escapeHtml(profile.pseudo || 'JOUEUR')}</div>
+          ${profile.level > 0 ? `<div class="goal-celeb-level">LVL ${profile.level}</div>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+  overlay.classList.add('show');
+  clearTimeout(overlay._timer);
+  overlay._timer = setTimeout(() => overlay.classList.remove('show'), 2800);
+}
+
+function shakeCamera(intensity){
+  if (!gameCam) return;
+  const base = { x: gameCam.position.x, y: gameCam.position.y, z: gameCam.position.z };
+  let frames = 25;
+  const shakeStep = () => {
+    if (frames <= 0){ gameCam.position.set(base.x, base.y, base.z); return; }
+    const i = (frames / 25) * intensity;
+    gameCam.position.set(base.x + (Math.random()-0.5)*i*4, base.y + (Math.random()-0.5)*i*2, base.z + (Math.random()-0.5)*i*4);
+    frames--;
+    requestAnimationFrame(shakeStep);
+  };
+  shakeStep();
+}
+
+// ============================================================================
+// EMOTES (live, keys 1-4)
+// ============================================================================
+const EMOTES = ['🤡', '👌', '💀', '🔥'];
+function makeEmoteSprite(emoji){
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(128, 128, 110, 0, Math.PI*2);
+  ctx.fill();
+  ctx.strokeStyle = '#171717';
+  ctx.lineWidth = 14;
+  ctx.stroke();
+  ctx.font = '160px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#171717';
+  ctx.fillText(emoji, 128, 140);
+  const tex = new THREE.CanvasTexture(canvas);
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(5, 5, 1);
+  return sprite;
+}
+function applyEmoteToPlayer(playerId, emojiIdx){
+  const p = players.find(x => x.id === playerId);
+  if (!p || !p.mesh) return;
+  // Remove previous
+  if (p.emoteSprite){
+    p.mesh.group.remove(p.emoteSprite);
+    p.emoteSprite.material.map?.dispose();
+    p.emoteSprite.material.dispose();
+    p.emoteSprite = null;
+  }
+  const emoji = EMOTES[emojiIdx] || '🤡';
+  const sprite = makeEmoteSprite(emoji);
+  sprite.position.set(0, 13, 0);
+  p.mesh.group.add(sprite);
+  p.emoteSprite = sprite;
+  p.emoteLife = 110;
+}
+function triggerLocalEmote(idx){
+  if (!gameStarted) return;
+  if (mode === 'local'){
+    // P1 (blue) gets emote
+    applyEmoteToPlayer(0, idx);
+  } else if (mode === 'host'){
+    applyEmoteToPlayer(myPlayerId, idx);
+    broadcastToClients({ type: 'event', evt: { type: 'emote', playerId: myPlayerId, idx } });
+  } else if (mode === 'client'){
+    if (hostConn && hostConn.open){
+      hostConn.send({ type: 'emote', idx });
+    }
+  }
+}
+function tickEmotes(){
+  for (const p of players){
+    if (!p.emoteSprite) continue;
+    p.emoteLife--;
+    if (p.emoteLife < 20){
+      p.emoteSprite.material.opacity = Math.max(0, p.emoteLife / 20);
+    }
+    // Slight bob
+    p.emoteSprite.position.y = 13 + Math.sin(performance.now() * 0.006) * 0.4;
+    if (p.emoteLife <= 0){
+      p.mesh.group.remove(p.emoteSprite);
+      p.emoteSprite.material.map?.dispose();
+      p.emoteSprite.material.dispose();
+      p.emoteSprite = null;
+    }
+  }
+}
+
+// ============================================================================
+// POWERUPS
+// ============================================================================
+const POWERUP_TYPES = [
+  { id: 'speed',    emoji: '⚡', color: 0xFCC419, label: 'SPRINT !' },
+  { id: 'megakick', emoji: '💣', color: 0xE14545, label: 'FRAPPE NUCLÉAIRE !' },
+  { id: 'magnet',   emoji: '🧲', color: 0x4FB6E8, label: 'AIMANT !' },
+  { id: 'freeze',   emoji: '❄️', color: 0xB0E2F5, label: 'GEL DES ENNEMIS !' }
+];
+let gamePowerups = [];
+let powerupSpawnTimer = 0;
+
+function spawnPowerup(){
+  const t = POWERUP_TYPES[Math.floor(Math.random()*POWERUP_TYPES.length)];
+  const x = (Math.random() - 0.5) * (FIELD_W * 0.7);
+  const z = (Math.random() - 0.5) * (FIELD_D * 0.6);
+  const g = new THREE.Group();
+  const cube = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.4, 2.4), new THREE.MeshLambertMaterial({color: t.color, emissive: t.color, emissiveIntensity: 0.5}));
+  cube.position.y = 2.8;
+  g.add(cube);
+  const sprite = makeEmoteSprite(t.emoji);
+  sprite.position.y = 2.8;
+  sprite.scale.set(2.6, 2.6, 1);
+  g.add(sprite);
+  g.position.set(x, 0, z);
+  gameScene.add(g);
+  gamePowerups.push({ x, z, type: t.id, mesh: g, life: 720 });
+}
+
+function updatePowerups(){
+  for (let i = gamePowerups.length - 1; i >= 0; i--){
+    const pu = gamePowerups[i];
+    pu.mesh.rotation.y += 0.025;
+    pu.mesh.children[0].position.y = 2.8 + Math.sin(performance.now()*0.003) * 0.5;
+    pu.mesh.children[1].position.y = 2.8 + Math.sin(performance.now()*0.003) * 0.5;
+    pu.life--;
+    if (pu.life <= 0){
+      gameScene.remove(pu.mesh);
+      gamePowerups.splice(i, 1);
+      continue;
+    }
+    // Only host or local checks collisions
+    if (mode === 'host' || mode === 'local'){
+      for (const p of players){
+        if (!p.mesh) continue;
+        const d = Math.hypot(p.x - pu.x, p.z - pu.z);
+        if (d < p.r + 1.8){
+          applyPowerup(p, pu.type);
+          gameScene.remove(pu.mesh);
+          gamePowerups.splice(i, 1);
+          broadcastEvent({ type: 'powerup', playerId: p.id, kind: pu.type });
+          break;
+        }
+      }
+    }
+  }
+  // Spawn
+  if (mode === 'host' || mode === 'local'){
+    if (currentGameConfig?.powerupsEnabled && gamePowerups.length < 2){
+      powerupSpawnTimer--;
+      if (powerupSpawnTimer <= 0){
+        spawnPowerup();
+        powerupSpawnTimer = 360 + Math.floor(Math.random() * 240); // 6-10 sec
+      }
+    }
+  }
+}
+
+function applyPowerup(p, kind){
+  if (!p.fx) p.fx = { speed: 0, megakick: 0, magnet: 0, freeze: 0 };
+  const t = POWERUP_TYPES.find(x => x.id === kind);
+  if (kind === 'speed') p.fx.speed = 240;
+  else if (kind === 'megakick') p.fx.megakick = 600;
+  else if (kind === 'magnet') p.fx.magnet = 240;
+  else if (kind === 'freeze'){
+    for (const o of players){
+      if (o.team !== p.team){
+        if (!o.fx) o.fx = { speed:0, megakick:0, magnet:0, freeze:0 };
+        o.fx.freeze = 90;
+      }
+    }
+  }
+  showCommentary(t ? t.label : 'POWER-UP !', false);
+}
+
+function clearPowerups(){
+  for (const pu of gamePowerups){
+    if (pu.mesh) gameScene.remove(pu.mesh);
+  }
+  gamePowerups = [];
 }
 
 function updateTrails(){
@@ -2428,6 +2956,8 @@ function gameLoop(){
   renderBall();
   updateTrails();
   updateConfetti();
+  tickEmotes();
+  updatePowerups();
   animateCrowd();
   const fl = document.getElementById('game-flash');
   if (gameButFlash > 0){ gameButFlash--; fl.style.opacity = Math.min(1, gameButFlash/30); }
@@ -2452,6 +2982,10 @@ window.addEventListener('keydown', (e) => {
   }
   // First key triggers audio context
   ensureAudio();
+  // Emote keys 1-4 in game
+  if (activeScreen === 'game' && (e.key === '1' || e.key === '2' || e.key === '3' || e.key === '4')){
+    triggerLocalEmote(parseInt(e.key) - 1);
+  }
 });
 window.addEventListener('keyup', (e) => { KEYS[e.key] = false; });
 
@@ -2540,6 +3074,7 @@ function showGameSetup(){
   document.getElementById('cfg-ball').value = currentGameConfig.ballSize;
   document.getElementById('cfg-crowd').checked = currentGameConfig.crowdEnabled;
   document.getElementById('cfg-commentators').checked = currentGameConfig.commentatorsEnabled;
+  document.getElementById('cfg-powerups').checked = !!currentGameConfig.powerupsEnabled;
   showScreen('game-setup');
 }
 
@@ -2585,7 +3120,7 @@ function tryCreatePeer(code, attempt){
 }
 
 function addHostSelfPlayer(){
-  const myEntry = { id: 0, skin: SKIN, pseudo: SKIN.pseudo || 'TOI', team: 0 };
+  const myEntry = { id: 0, skin: SKIN, pseudo: SKIN.pseudo || 'TOI', team: 0, profile: buildProfileSnapshot() };
   if (!players.find(p => p.id === 0)) players.push({ ...myEntry, isLocalHostEntry: true });
   refreshHostPlayerList();
 }
@@ -2601,7 +3136,7 @@ function handleNewClient(conn){
       const blueCount = players.filter(p => p.team === 0).length;
       const redCount = players.filter(p => p.team === 1).length;
       const team = blueCount <= redCount ? 0 : 1;
-      const entry = { id: assignedId, skin: msg.skin, pseudo: msg.pseudo, team, conn };
+      const entry = { id: assignedId, skin: msg.skin, pseudo: msg.pseudo, team, conn, profile: msg.profile };
       players.push(entry);
       clientConns.push({ conn, id: assignedId });
       // Welcome the new client with full state
@@ -2609,10 +3144,10 @@ function handleNewClient(conn){
         type: 'welcome',
         yourId: assignedId,
         team,
-        players: players.map(p => ({ id: p.id, skin: p.skin, pseudo: p.pseudo, team: p.team }))
+        players: players.map(p => ({ id: p.id, skin: p.skin, pseudo: p.pseudo, team: p.team, profile: p.profile }))
       });
       // Notify others
-      broadcastToClients({ type: 'playerJoined', player: { id: assignedId, skin: msg.skin, pseudo: msg.pseudo, team } }, conn);
+      broadcastToClients({ type: 'playerJoined', player: { id: assignedId, skin: msg.skin, pseudo: msg.pseudo, team, profile: msg.profile } }, conn);
       refreshHostPlayerList();
     } else if (msg.type === 'input'){
       const pl = players.find(p => p.id === assignedId);
@@ -2625,6 +3160,11 @@ function handleNewClient(conn){
         } else {
           pl.pendingInput = msg.input;
         }
+      }
+    } else if (msg.type === 'emote'){
+      if (gameStarted && typeof msg.idx === 'number'){
+        applyEmoteToPlayer(assignedId, msg.idx);
+        broadcastToClients({ type: 'event', evt: { type: 'emote', playerId: assignedId, idx: msg.idx } });
       }
     }
   });
@@ -2709,7 +3249,7 @@ function startJoin(codeInput){
   peer.on('open', () => {
     hostConn = peer.connect(peerIdFromCode(code), { reliable: true });
     hostConn.on('open', () => {
-      hostConn.send({ type: 'hello', skin: SKIN, pseudo: SKIN.pseudo || 'TOI' });
+      hostConn.send({ type: 'hello', skin: SKIN, pseudo: SKIN.pseudo || 'TOI', profile: buildProfileSnapshot() });
     });
     hostConn.on('data', (msg) => handleHostMessage(msg));
     hostConn.on('close', () => {
@@ -2739,12 +3279,12 @@ function handleHostMessage(msg){
     mode = 'client';
     myPlayerId = msg.yourId;
     // Build player list for lobby
-    players = msg.players.map(p => ({ id: p.id, skin: p.skin, pseudo: p.pseudo, team: p.team }));
+    players = msg.players.map(p => ({ id: p.id, skin: p.skin, pseudo: p.pseudo, team: p.team, profile: p.profile }));
     document.getElementById('join-status').innerHTML = '';
     document.getElementById('join-waiting').style.display = 'block';
     refreshClientPlayerList();
   } else if (msg.type === 'playerJoined'){
-    players.push({ id: msg.player.id, skin: msg.player.skin, pseudo: msg.player.pseudo, team: msg.player.team });
+    players.push({ id: msg.player.id, skin: msg.player.skin, pseudo: msg.player.pseudo, team: msg.player.team, profile: msg.player.profile });
     refreshClientPlayerList();
   } else if (msg.type === 'playerLeft'){
     const removed = players.find(p => p.id === msg.id);
@@ -2766,7 +3306,7 @@ function handleHostMessage(msg){
     // Build game player objects on client from current player list
     const gamePlayers = [];
     for (const p of players){
-      const obj = buildPlayerObject(p.skin, p.team, p.id, p.id === myPlayerId);
+      const obj = buildPlayerObject(p.skin, p.team, p.id, p.id === myPlayerId, p.profile);
       gamePlayers.push(obj);
     }
     players = gamePlayers;
@@ -2824,6 +3364,8 @@ function handleEvent(evt){
     setTimeout(playWhistle, 200);
     triggerCommentary('goal');
     spawnConfetti(evt.team);
+    shakeCamera(0.6);
+    showGoalCelebration(evt.scorerProfile, evt.team, evt.isOwnGoal);
   }
   else if (evt.type === 'kick'){
     playKick(evt.power || 0.5);
@@ -2832,6 +3374,13 @@ function handleEvent(evt){
   }
   else if (evt.type === 'slide'){
     triggerCommentary('slide');
+  }
+  else if (evt.type === 'emote'){
+    applyEmoteToPlayer(evt.playerId, evt.idx);
+  }
+  else if (evt.type === 'powerup'){
+    const t = POWERUP_TYPES.find(x => x.id === evt.kind);
+    if (t) showCommentary(t.label, false);
   }
   else if (evt.type === 'start'){
     triggerCommentary('start');
@@ -2880,7 +3429,7 @@ function hostStartGame(){
   // Convert lobby entries into game player objects
   const gamePlayers = [];
   for (const p of players){
-    const obj = buildPlayerObject(p.skin, p.team, p.id, p.id === 0);
+    const obj = buildPlayerObject(p.skin, p.team, p.id, p.id === 0, p.profile);
     // Preserve conn ref if exists
     const orig = players.find(x => x.id === p.id);
     if (orig && orig.conn) obj.conn = orig.conn;
@@ -2907,6 +3456,8 @@ function clearGameScene(){
     t.geometry.dispose(); t.material.dispose();
   }
   gameTrails = [];
+  clearPowerups();
+  powerupSpawnTimer = 600; // grace period before first spawn
 }
 
 // LOCAL 2-PLAYER
@@ -2922,8 +3473,9 @@ function startLocal2P(){
   gameStarted = true;
   myPlayerId = 0;
   const opponentSkin = { ...DEFAULT_SKIN, pseudo: 'POTE', jerseyIdx: 1, hairIdx: 2, hairStyleIdx: 2 };
-  const p1 = buildPlayerObject(SKIN, 0, 0, true);
-  const p2 = buildPlayerObject(opponentSkin, 1, 1, true);
+  const opponentProfile = { pseudo: 'POTE', portraitId: 'fire', bannerId: 'fire', level: 1 };
+  const p1 = buildPlayerObject(SKIN, 0, 0, true, buildProfileSnapshot());
+  const p2 = buildPlayerObject(opponentSkin, 1, 1, true, opponentProfile);
   players = [p1, p2];
   resetPositions();
   showScreen('game');
@@ -2984,6 +3536,75 @@ function switchSettingsTab(name){
   document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('hide', c.id !== 'tab-' + name));
   if (name === 'keys') renderKeysList();
   if (name === 'social') renderSocialTab();
+  if (name === 'shop') renderShopTab();
+}
+
+function renderShopTab(){
+  document.getElementById('shop-coins').textContent = PROFILE.coins;
+  const portGrid = document.getElementById('shop-portraits');
+  portGrid.innerHTML = '';
+  for (const p of PORTRAITS){
+    const owned = PROFILE.ownedPortraits.includes(p.id);
+    const equipped = PROFILE.portraitId === p.id;
+    const card = document.createElement('div');
+    card.className = 'shop-card' + (equipped ? ' equipped' : '');
+    card.innerHTML = `
+      <div class="shop-portrait-preview" style="background:${p.bg}">${p.emoji}</div>
+      <div class="shop-card-info">
+        ${equipped ? '<button class="shop-card-btn equipped-tag" disabled>✓ Équipé</button>' :
+         owned ? '<button class="shop-card-btn equip" data-eq="' + p.id + '" data-kind="portrait">Équiper</button>' :
+         `<button class="shop-card-btn" data-buy="${p.id}" data-kind="portrait" ${PROFILE.coins < p.cost ? 'disabled' : ''}>🪙 ${p.cost}</button>`}
+      </div>
+    `;
+    portGrid.appendChild(card);
+  }
+  const banGrid = document.getElementById('shop-banners');
+  banGrid.innerHTML = '';
+  for (const b of BANNERS){
+    const owned = PROFILE.ownedBanners.includes(b.id);
+    const equipped = PROFILE.bannerId === b.id;
+    const card = document.createElement('div');
+    card.className = 'shop-card' + (equipped ? ' equipped' : '');
+    card.innerHTML = `
+      <div class="shop-banner-preview" style="background:${b.css}"></div>
+      <div class="shop-card-info">
+        <div class="shop-card-name">${escapeHtml(b.name)}</div>
+        ${equipped ? '<button class="shop-card-btn equipped-tag" disabled>✓ Équipé</button>' :
+         owned ? '<button class="shop-card-btn equip" data-eq="' + b.id + '" data-kind="banner">Équiper</button>' :
+         `<button class="shop-card-btn" data-buy="${b.id}" data-kind="banner" ${PROFILE.coins < b.cost ? 'disabled' : ''}>🪙 ${b.cost}</button>`}
+      </div>
+    `;
+    banGrid.appendChild(card);
+  }
+  // Wire all buttons
+  document.querySelectorAll('[data-buy]').forEach(btn => {
+    btn.addEventListener('click', () => buyShopItem(btn.dataset.buy, btn.dataset.kind));
+  });
+  document.querySelectorAll('[data-eq]').forEach(btn => {
+    btn.addEventListener('click', () => equipShopItem(btn.dataset.eq, btn.dataset.kind));
+  });
+}
+
+function buyShopItem(id, kind){
+  const list = kind === 'portrait' ? PORTRAITS : BANNERS;
+  const item = list.find(x => x.id === id);
+  if (!item) return;
+  if (PROFILE.coins < item.cost) return;
+  PROFILE.coins -= item.cost;
+  if (kind === 'portrait') PROFILE.ownedPortraits.push(id);
+  else PROFILE.ownedBanners.push(id);
+  saveProfile();
+  // Auto-equip if first owned
+  equipShopItem(id, kind);
+}
+
+function equipShopItem(id, kind){
+  if (kind === 'portrait') PROFILE.portraitId = id;
+  else PROFILE.bannerId = id;
+  saveProfile();
+  renderShopTab();
+  // Refresh profile card if visible
+  if (document.getElementById('social-profile-card')) renderSocialProfile();
 }
 
 function renderKeysList(){
@@ -3100,11 +3721,33 @@ function renderSocialProfile(){
   const code = getOrCreateFriendCode();
   const card = document.getElementById('social-profile-card');
   if (!card) return;
+  const banner = getBanner(PROFILE.bannerId);
+  const portrait = getPortrait(PROFILE.portraitId);
+  const level = levelFromXP(PROFILE.xp);
+  const xpThis = xpForLevel(level);
+  const xpNext = xpForLevel(level + 1);
+  const xpProgress = ((PROFILE.xp - xpThis) / (xpNext - xpThis)) * 100;
+  const usingDiscord = !!(discordUser && discordUser.avatar);
+  const avatarContent = usingDiscord
+    ? `<img src="${discordAvatarUrl(discordUser)}" alt="">`
+    : `<span>${portrait.emoji}</span>`;
+  card.style.cssText = '';
   card.innerHTML = `
-    <div class="social-card-text">
-      <b>${escapeHtml(SKIN.pseudo || 'GOOFY')}</b>
-      <div style="font-size:13px; opacity:0.9; margin-top:4px;">Ton code ami :</div>
-      <span class="social-card-code" id="my-friend-code">${escapeHtml(code)}</span>
+    <div class="profile-banner-bg" style="background: ${banner.css};"></div>
+    <div class="profile-content">
+      <div class="profile-portrait" style="background: ${portrait.bg};">${avatarContent}</div>
+      <div class="profile-text">
+        <div class="profile-name">${escapeHtml(SKIN.pseudo || 'GOOFY')}</div>
+        <div class="profile-level-row">
+          <span class="profile-level">LVL ${level}</span>
+          <span class="profile-xp-text">${PROFILE.xp - xpThis} / ${xpNext - xpThis} XP</span>
+        </div>
+        <div class="profile-xp-bar"><div class="profile-xp-fill" style="width:${xpProgress}%"></div></div>
+        <div class="profile-meta">
+          <span>🪙 <b>${PROFILE.coins}</b> coins</span>
+          <span style="opacity:0.85">Code ami : <span class="social-card-code" id="my-friend-code">${escapeHtml(code)}</span></span>
+        </div>
+      </div>
     </div>
   `;
   const codeEl = document.getElementById('my-friend-code');
@@ -3255,7 +3898,93 @@ function addFriendFromInput(){
   renderFriendsList();
 }
 
+// ============================================================================
+// PROFILE: portraits, banners, XP, level, coins
+// ============================================================================
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+const PORTRAITS = [
+  { id: 'goat',    emoji: '🐐', bg: '#FCC419', cost: 0 },
+  { id: 'star',    emoji: '⭐', bg: '#FFE066', cost: 0 },
+  { id: 'fire',    emoji: '🔥', bg: '#FF6B35', cost: 0 },
+  { id: 'cool',    emoji: '😎', bg: '#4FB6E8', cost: 150 },
+  { id: 'clown',   emoji: '🤡', bg: '#FF8FB1', cost: 200 },
+  { id: 'cold',    emoji: '🥶', bg: '#B0E2F5', cost: 200 },
+  { id: 'robot',   emoji: '🤖', bg: '#B0B0B0', cost: 300 },
+  { id: 'ghost',   emoji: '👻', bg: '#E0DCFF', cost: 350 },
+  { id: 'lion',    emoji: '🦁', bg: '#E8A547', cost: 400 },
+  { id: 'alien',   emoji: '👽', bg: '#7DCE82', cost: 500 },
+  { id: 'skull',   emoji: '💀', bg: '#2C2C2C', cost: 700 },
+  { id: 'unicorn', emoji: '🦄', bg: '#FFB3D9', cost: 800 },
+  { id: 'devil',   emoji: '😈', bg: '#7B3FBF', cost: 1000 },
+  { id: 'crown',   emoji: '👑', bg: '#FFD700', cost: 2500 }
+];
+const BANNERS = [
+  { id: 'orange',  name: 'Goofy Orange',   cost: 0,    css: 'linear-gradient(135deg, #F76C1F, #E14545)' },
+  { id: 'sky',     name: 'Ciel bleu',      cost: 0,    css: 'linear-gradient(135deg, #4FB6E8, #185FA5)' },
+  { id: 'grass',   name: 'Pelouse',        cost: 0,    css: 'linear-gradient(135deg, #3D9F4E, #1F5B26)' },
+  { id: 'gold',    name: 'Or massif',      cost: 300,  css: 'linear-gradient(135deg, #FFD700, #C99A00)' },
+  { id: 'purple',  name: 'Pourpre',        cost: 400,  css: 'linear-gradient(135deg, #7B3FBF, #3A1F6F)' },
+  { id: 'fire',    name: 'Brasier',        cost: 500,  css: 'linear-gradient(135deg, #FF6B35, #771500)' },
+  { id: 'space',   name: 'Cosmique',       cost: 700,  css: 'linear-gradient(135deg, #1A0E40, #4FB6E8)' },
+  { id: 'rainbow', name: 'Arc-en-ciel',    cost: 1200, css: 'linear-gradient(90deg, #ff5b5b, #ffa942, #ffd942, #5cd454, #4fb6e8, #7b3fbf)' },
+  { id: 'matrix',  name: 'Matrix',         cost: 900,  css: 'linear-gradient(135deg, #00FF41, #003B00)' }
+];
+const DEFAULT_PROFILE = {
+  portraitId: 'goat',
+  bannerId: 'orange',
+  xp: 0,
+  coins: 100,
+  ownedPortraits: ['goat', 'star', 'fire'],
+  ownedBanners: ['orange', 'sky', 'grass']
+};
+let PROFILE = null;
+
+function loadProfile(){
+  try {
+    const stored = JSON.parse(localStorage.getItem('gf_profile')||'{}');
+    const p = Object.assign({}, DEFAULT_PROFILE, stored);
+    p.ownedPortraits = stored.ownedPortraits || DEFAULT_PROFILE.ownedPortraits.slice();
+    p.ownedBanners   = stored.ownedBanners   || DEFAULT_PROFILE.ownedBanners.slice();
+    // Make sure defaults are owned
+    for (const f of DEFAULT_PROFILE.ownedPortraits) if (!p.ownedPortraits.includes(f)) p.ownedPortraits.push(f);
+    for (const f of DEFAULT_PROFILE.ownedBanners) if (!p.ownedBanners.includes(f)) p.ownedBanners.push(f);
+    return p;
+  } catch(e){ return JSON.parse(JSON.stringify(DEFAULT_PROFILE)); }
+}
+function saveProfile(){
+  try { localStorage.setItem('gf_profile', JSON.stringify(PROFILE)); } catch(e){}
+}
+function levelFromXP(xp){ return 1 + Math.floor(Math.sqrt(Math.max(0,xp) / 80)); }
+function xpForLevel(level){ return (level - 1) * (level - 1) * 80; }
+function awardXP(amount){
+  if (!PROFILE) return null;
+  const prevLevel = levelFromXP(PROFILE.xp);
+  PROFILE.xp = Math.max(0, PROFILE.xp + amount);
+  const newLevel = levelFromXP(PROFILE.xp);
+  saveProfile();
+  return { gained: amount, prevLevel, newLevel, leveledUp: newLevel > prevLevel };
+}
+function awardCoins(amount){
+  if (!PROFILE) return;
+  PROFILE.coins = Math.max(0, PROFILE.coins + amount);
+  saveProfile();
+}
+function getPortrait(id){ return PORTRAITS.find(p => p.id === id) || PORTRAITS[0]; }
+function getBanner(id){ return BANNERS.find(b => b.id === id) || BANNERS[0]; }
+
+function buildProfileSnapshot(){
+  if (!PROFILE) return null;
+  return {
+    pseudo: SKIN.pseudo || 'TOI',
+    portraitId: PROFILE.portraitId,
+    bannerId: PROFILE.bannerId,
+    level: levelFromXP(PROFILE.xp),
+    xp: PROFILE.xp,
+    discordAvatar: discordUser ? discordAvatarUrl(discordUser) : null,
+    discordName: discordUser ? discordUser.username : null
+  };
+}
 
 // ============================================================================
 // DISCORD AUTH (OAuth2 implicit flow, no backend needed)
@@ -3465,6 +4194,7 @@ function showCommentary(text, shake){
 function init(){
   SKIN = loadSkin();
   SETTINGS = loadSettings();
+  PROFILE = loadProfile();
   discordUser = loadDiscordUser();
   setupMenuPreview();
   setupCustPreview();
@@ -3591,7 +4321,8 @@ function init(){
         pointsTarget: parseInt(document.getElementById('cfg-points').value),
         ballSize: parseFloat(document.getElementById('cfg-ball').value),
         crowdEnabled: document.getElementById('cfg-crowd').checked,
-        commentatorsEnabled: document.getElementById('cfg-commentators').checked
+        commentatorsEnabled: document.getElementById('cfg-commentators').checked,
+        powerupsEnabled: document.getElementById('cfg-powerups').checked
       };
     }
     startHost();
