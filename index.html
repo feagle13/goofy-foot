@@ -1334,14 +1334,36 @@ h2 {
   <h2 class="sr-only">Goofy Foot, jeu de football multijoueur dans le navigateur avec personnalisation de personnage</h2>
 </div>
 
+<div id="error-overlay" style="display:none; position:fixed; top:10px; left:10px; right:10px; max-width:600px; margin:auto; background:#E14545; color:white; padding:14px 18px; border-radius:10px; border:3px solid #171717; box-shadow: 4px 4px 0 #171717; font-family:monospace; font-size:12px; z-index:9999; white-space:pre-wrap; overflow:auto; max-height:300px;">
+  <b style="font-family:'Bungee',sans-serif; font-size:16px;">⚠️ ERREUR DÉTECTÉE</b>
+  <div id="error-text" style="margin-top:8px;"></div>
+  <button onclick="document.getElementById('error-overlay').style.display='none'" style="margin-top:8px; background:white; color:black; border:2px solid #171717; border-radius:5px; padding:4px 10px; font-family:inherit; cursor:pointer;">Fermer</button>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
+function showFatalError(msg){
+  const ov = document.getElementById('error-overlay');
+  const tx = document.getElementById('error-text');
+  if (ov && tx){
+    ov.style.display = 'block';
+    tx.textContent = msg;
+  }
+  console.error(msg);
+}
+window.addEventListener('error', (e) => {
+  showFatalError('[JS] ' + e.message + '\n@ ' + (e.filename||'?') + ':' + (e.lineno||'?') + (e.error?.stack ? '\n\n' + e.error.stack : ''));
+});
+window.addEventListener('unhandledrejection', (e) => {
+  showFatalError('[Promise] ' + (e.reason?.message || e.reason));
+});
 function bootstrap(){
   if (typeof THREE === 'undefined' || typeof Peer === 'undefined') {
     setTimeout(bootstrap, 60); return;
   }
-  init();
+  console.log('%cGoofy Foot v7 — démarrage', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
+  try { init(); } catch(e){ showFatalError('[init] ' + e.message + '\n\n' + e.stack); }
 }
 
 // ============================================================================
@@ -2422,6 +2444,7 @@ function buildPlayerObject(skin, team, id, isLocal, profile){
     prevShoot: false,
     prevSlide: false,
     shootDownAt: 0,
+    fx: { speed: 0, megakick: 0, magnet: 0, freeze: 0 },
     color: team === 0 ? 0x4a9eff : 0xff4a4a
   };
 }
@@ -3005,44 +3028,63 @@ function renderBall(){
 
 function gameLoop(){
   if (!gameLoopRunning) return;
+  try {
 
-  if (mode === 'host' || mode === 'local'){
-    if (gameResetTimer > 0){
-      gameResetTimer--;
-      if (gameResetTimer === 0){ resetPositions(); playWhistle(); }
-    } else {
-      for (const p of players) applyPlayerInput(p);
-      // Player-player collisions (all pairs)
-      for (let i = 0; i < players.length; i++)
-        for (let j = i+1; j < players.length; j++)
-          collidePlayers(players[i], players[j]);
-      // Player-ball collisions
-      for (const p of players) collidePlayerBall(p, gameBall);
-      updateBall(gameBall);
+    if (mode === 'host' || mode === 'local'){
+      if (gameResetTimer > 0){
+        gameResetTimer--;
+        if (gameResetTimer === 0){ resetPositions(); playWhistle(); }
+      } else {
+        for (const p of players) applyPlayerInput(p);
+        // Player-player collisions (all pairs)
+        for (let i = 0; i < players.length; i++)
+          for (let j = i+1; j < players.length; j++)
+            collidePlayers(players[i], players[j]);
+        // Player-ball collisions
+        for (const p of players) collidePlayerBall(p, gameBall);
+        updateBall(gameBall);
+      }
+      // Host: broadcast state at ~30Hz (every 2 frames)
+      if (mode === 'host'){
+        if (!gameLoop._tick) gameLoop._tick = 0;
+        gameLoop._tick++;
+        if (gameLoop._tick % 2 === 0) broadcastState();
+      }
     }
-    // Host: broadcast state at ~30Hz (every 2 frames)
-    if (mode === 'host'){
-      if (!gameLoop._tick) gameLoop._tick = 0;
-      gameLoop._tick++;
-      if (gameLoop._tick % 2 === 0) broadcastState();
+
+    // All modes: render
+    for (const p of players) syncMesh(p);
+    if (gameBallMesh) renderBall();
+    updateTrails();
+    updateConfetti();
+    updateExplosions();
+    tickEmotes();
+    updatePowerups();
+    animateCrowd();
+    const fl = document.getElementById('game-flash');
+    if (fl){
+      if (gameButFlash > 0){ gameButFlash--; fl.style.opacity = Math.min(1, gameButFlash/30); }
+      else fl.style.opacity = 0;
     }
+    if (gameRen && gameScene && gameCam) gameRen.render(gameScene, gameCam);
+    updateFps();
+  } catch (err) {
+    console.error('gameLoop error:', err);
+    showDebugError('gameLoop: ' + (err.message || err));
+    // Don't bail out — try again next frame
   }
-
-  // All modes: render
-  for (const p of players) syncMesh(p);
-  renderBall();
-  updateTrails();
-  updateConfetti();
-  updateExplosions();
-  tickEmotes();
-  updatePowerups();
-  animateCrowd();
-  const fl = document.getElementById('game-flash');
-  if (gameButFlash > 0){ gameButFlash--; fl.style.opacity = Math.min(1, gameButFlash/30); }
-  else fl.style.opacity = 0;
-  gameRen.render(gameScene, gameCam);
-  updateFps();
   requestAnimationFrame(gameLoop);
+}
+
+function showDebugError(msg){
+  let el = document.getElementById('debug-error');
+  if (!el){
+    el = document.createElement('div');
+    el.id = 'debug-error';
+    el.style.cssText = 'position:fixed; bottom:10px; left:10px; right:10px; max-height:200px; overflow-y:auto; background:rgba(225,69,69,0.95); color:white; padding:10px; font-family:monospace; font-size:11px; border-radius:8px; z-index:9999; border:2px solid black;';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
 }
 
 // ============================================================================
@@ -3064,7 +3106,43 @@ window.addEventListener('keydown', (e) => {
   if (activeScreen === 'game' && (e.key === '1' || e.key === '2' || e.key === '3' || e.key === '4')){
     triggerLocalEmote(parseInt(e.key) - 1);
   }
+  // Toggle debug panel with D
+  if (e.key === 'D' && (e.ctrlKey || e.metaKey)){
+    e.preventDefault();
+    toggleDebugPanel();
+  }
 });
+let debugPanelInterval = null;
+function toggleDebugPanel(){
+  let el = document.getElementById('debug-panel');
+  if (el){
+    el.remove();
+    if (debugPanelInterval) clearInterval(debugPanelInterval);
+    debugPanelInterval = null;
+    return;
+  }
+  el = document.createElement('div');
+  el.id = 'debug-panel';
+  el.style.cssText = 'position:fixed; bottom:10px; left:10px; background:rgba(0,0,0,0.85); color:lime; padding:10px; font-family:monospace; font-size:11px; border-radius:6px; border:1px solid lime; z-index:9999; max-width:300px; white-space:pre;';
+  document.body.appendChild(el);
+  debugPanelInterval = setInterval(() => {
+    const sceneChildren = gameScene ? gameScene.children.length : 'no scene';
+    const camPos = gameCam ? `(${gameCam.position.x.toFixed(0)},${gameCam.position.y.toFixed(0)},${gameCam.position.z.toFixed(0)})` : 'no cam';
+    el.textContent =
+      `screen: ${activeScreen}\n` +
+      `mode: ${mode}\n` +
+      `gameStarted: ${gameStarted}\n` +
+      `loopRunning: ${gameLoopRunning}\n` +
+      `players: ${players.length}\n` +
+      `myPlayerId: ${myPlayerId}\n` +
+      `scene children: ${sceneChildren}\n` +
+      `cam pos: ${camPos}\n` +
+      `gameRen: ${!!gameRen}\n` +
+      `inited: ${gameInitedScene}\n` +
+      `meshes tracked: ${allPlayerMeshes.length}\n` +
+      (players[0] ? `p0: id=${players[0].id} x=${players[0].x?.toFixed(0)} z=${players[0].z?.toFixed(0)}` : '');
+  }, 200);
+}
 window.addEventListener('keyup', (e) => { KEYS[e.key] = false; });
 
 function readLocalInput(){
@@ -3111,20 +3189,24 @@ function readLocal2P_Red_v2(){
 }
 
 function inputLoop(){
-  if (activeScreen !== 'game'){ setTimeout(inputLoop, 100); return; }
-  if (mode === 'host'){
-    const me = players.find(p => p.id === myPlayerId);
-    if (me) me.input = readLocalInput();
-  } else if (mode === 'client'){
-    const inp = readLocalInput();
-    const ser = JSON.stringify(inp);
-    if (ser !== inputLastSent){
-      inputLastSent = ser;
-      if (hostConn && hostConn.open) hostConn.send({ type: 'input', input: inp });
+  try {
+    if (activeScreen !== 'game'){ setTimeout(inputLoop, 100); return; }
+    if (mode === 'host'){
+      const me = players.find(p => p.id === myPlayerId);
+      if (me) me.input = readLocalInput();
+    } else if (mode === 'client'){
+      const inp = readLocalInput();
+      const ser = JSON.stringify(inp);
+      if (ser !== inputLastSent){
+        inputLastSent = ser;
+        if (hostConn && hostConn.open) hostConn.send({ type: 'input', input: inp });
+      }
+    } else if (mode === 'local'){
+      if (players[0]) players[0].input = readLocal2P_Blue();
+      if (players[1]) players[1].input = readLocal2P_Red_v2();
     }
-  } else if (mode === 'local'){
-    if (players[0]) players[0].input = readLocal2P_Blue();
-    if (players[1]) players[1].input = readLocal2P_Red_v2();
+  } catch(err){
+    console.error('inputLoop error:', err);
   }
   requestAnimationFrame(inputLoop);
 }
