@@ -1916,10 +1916,18 @@ function buildCustomizerUI(){
 // SCREEN MANAGEMENT
 // ============================================================================
 function showScreen(name){
+  console.log('[showScreen]', name);
   activeScreen=name;
   document.querySelectorAll('.screen').forEach(s => {
     s.classList.toggle('active', s.id === 'screen-' + name);
   });
+  // Verify visibility
+  const target = document.getElementById('screen-' + name);
+  if (target){
+    console.log('  → screen-' + name + ' rect:', target.offsetWidth + 'x' + target.offsetHeight, 'children:', target.children.length);
+  } else {
+    console.warn('  → screen-' + name + ' NOT FOUND IN DOM');
+  }
   if(name==='menu') menuLoop();
   if(name==='customizer'){ refreshCustPreview(); custLoop(); }
   if(name==='game'){
@@ -1945,7 +1953,9 @@ function updateControlsHint(){
 let gameFieldMat, gameStripeMat, gameLineMat, gamePostMat, gameNetMat, gameCrowdGroup;
 
 function initGameScene(){
+  console.log('[initGameScene] start');
   const canvas = document.getElementById('game-canvas');
+  console.log('  canvas element:', !!canvas, 'size:', canvas?.offsetWidth + 'x' + canvas?.offsetHeight);
   gameRen = new THREE.WebGLRenderer({canvas, antialias:true});
   gameRen.setPixelRatio(window.devicePixelRatio||1);
   gameRen.setSize(1100, 700, false);
@@ -4572,6 +4582,27 @@ function init(){
   const fallback = document.getElementById('js-fallback');
   if (fallback) fallback.style.display = 'none';
   console.log('%c[Goofy Foot V8] init() terminé avec succès', 'background:#3D9F4E;color:white;padding:4px 10px;border-radius:4px;font-weight:bold;');
+
+  // === DIAGNOSTIC FINAL ===
+  console.log('%c=== DIAGNOSTIC ÉCRANS ===', 'background:#7B3FBF;color:white;padding:4px 10px;');
+  [...document.querySelectorAll('.screen')].forEach(s => {
+    const cs = getComputedStyle(s);
+    console.log('  ' + s.id, '| classes:', s.className, '| display:', cs.display, '| size:', s.offsetWidth + 'x' + s.offsetHeight, '| children:', s.children.length);
+  });
+  const menu = document.getElementById('screen-menu');
+  const menuWrap = document.querySelector('.menu-wrap');
+  console.log('  → menu-wrap exists:', !!menuWrap, 'size:', menuWrap?.offsetWidth + 'x' + menuWrap?.offsetHeight);
+  console.log('  → menu has active:', menu?.classList.contains('active'));
+  console.log('  → activeScreen var:', activeScreen);
+  console.log('  → window inner size:', window.innerWidth + 'x' + window.innerHeight);
+  // FAILSAFE: if menu is supposed to be visible but isn't, force it
+  if (activeScreen === 'menu' && menu){
+    const cs = getComputedStyle(menu);
+    if (cs.display === 'none' || menu.offsetHeight < 50){
+      console.warn('[FAILSAFE] Menu invisible malgré active class — application force display:block');
+      menu.style.cssText = 'display:block !important;';
+    }
+  }
 }
 
 bootstrap();
