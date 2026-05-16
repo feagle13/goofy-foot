@@ -6,10 +6,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Goofy Foot ⚽ — V7</title>
+<title>Goofy Foot ⚽ — V8</title>
 <script>
 // Earliest possible diagnostic — runs before anything else
-console.log('%c[Goofy Foot V7] HTML loaded — début du parsing', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
+console.log('%c[Goofy Foot V8] HTML loaded — début du parsing', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
 window.__goofy_started = true;
 window.addEventListener('error', function(e){
   console.error('[Goofy Foot] ERREUR:', e.message, 'à', e.filename, ':', e.lineno);
@@ -1391,7 +1391,7 @@ function bootstrap(){
   if (typeof THREE === 'undefined' || typeof Peer === 'undefined') {
     setTimeout(bootstrap, 60); return;
   }
-  console.log('%cGoofy Foot v7 — démarrage', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
+  console.log('%cGoofy Foot V8 — démarrage', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
   try { init(); } catch(e){ showFatalError('[init] ' + e.message + '\n\n' + e.stack); }
 }
 
@@ -4399,18 +4399,28 @@ function showCommentary(text, shake){
 // INIT
 // ============================================================================
 function init(){
+  const step = (n, name) => { try { console.log('[init step '+n+'] '+name); } catch(e){} };
+  step(1, 'loadSkin');
   SKIN = loadSkin();
+  step(2, 'loadSettings');
   SETTINGS = loadSettings();
+  step(3, 'loadProfile');
   PROFILE = loadProfile();
+  step(4, 'loadDiscordUser');
   discordUser = loadDiscordUser();
+  step(5, 'setupMenuPreview');
   setupMenuPreview();
+  step(6, 'setupCustPreview');
   setupCustPreview();
+  step(7, 'buildCustomizerUI');
   buildCustomizerUI();
+  step(8, 'refreshMenuGreeting');
   refreshMenuGreeting();
+  step(9, 'handleDiscordRedirect');
   handleDiscordRedirect();
+  step(10, 'handleJoinUrlParam');
   handleJoinUrlParam();
-
-  // Wire menu buttons
+  step(11, 'wire menu buttons');
   document.getElementById('btn-play-online').addEventListener('click', () => { ensureAudio(); showScreen('lobby-choice'); });
   document.getElementById('btn-play-local').addEventListener('click', () => { ensureAudio(); startLocal2P(); });
   document.getElementById('btn-customize').addEventListener('click', () => showScreen('customizer'));
@@ -4561,7 +4571,7 @@ function init(){
   window.__goofy_inited = true;
   const fallback = document.getElementById('js-fallback');
   if (fallback) fallback.style.display = 'none';
-  console.log('%c[Goofy Foot V7] init() terminé avec succès', 'background:#3D9F4E;color:white;padding:4px 10px;border-radius:4px;font-weight:bold;');
+  console.log('%c[Goofy Foot V8] init() terminé avec succès', 'background:#3D9F4E;color:white;padding:4px 10px;border-radius:4px;font-weight:bold;');
 }
 
 bootstrap();
