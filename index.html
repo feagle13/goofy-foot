@@ -6,10 +6,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Goofy Foot ⚽ — V8</title>
+<title>Goofy Foot ⚽ — V9</title>
 <script>
 // Earliest possible diagnostic — runs before anything else
-console.log('%c[Goofy Foot V8] HTML loaded — début du parsing', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
+console.log('%c[Goofy Foot V9] HTML loaded — début du parsing', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
 window.__goofy_started = true;
 window.addEventListener('error', function(e){
   console.error('[Goofy Foot] ERREUR:', e.message, 'à', e.filename, ':', e.lineno);
@@ -344,6 +344,7 @@ h2 {
 #game-canvas {
   width: 100%;
   height: auto;
+  aspect-ratio: 11 / 7;
   display: block;
   background: #87ceeb;
   border: 3px solid var(--black);
@@ -1391,7 +1392,7 @@ function bootstrap(){
   if (typeof THREE === 'undefined' || typeof Peer === 'undefined') {
     setTimeout(bootstrap, 60); return;
   }
-  console.log('%cGoofy Foot V8 — démarrage', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
+  console.log('%cGoofy Foot V9 — démarrage', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
   try { init(); } catch(e){ showFatalError('[init] ' + e.message + '\n\n' + e.stack); }
 }
 
@@ -3497,6 +3498,8 @@ function handleHostMessage(msg){
     refreshClientPlayerList();
   } else if (msg.type === 'gameStart'){
     currentGameConfig = msg.config || JSON.parse(JSON.stringify(DEFAULT_GAME_CONFIG));
+    // CRITICAL: show game screen FIRST so canvas has dimensions
+    showScreen('game');
     if (!gameInitedScene) initGameScene();
     else { clearGameScene(); applyMap(); rebuildCrowd(); resizeBall(); }
     gameScores = [0, 0];
@@ -3511,7 +3514,6 @@ function handleHostMessage(msg){
       gamePlayers.push(obj);
     }
     players = gamePlayers;
-    showScreen('game');
     gameLoopRunning = true;
     triggerCommentary('start');
     gameLoop();
@@ -3625,6 +3627,8 @@ function refreshClientPlayerList(){
 function hostStartGame(){
   if (players.length < 1) return;
   if (!currentGameConfig) currentGameConfig = JSON.parse(JSON.stringify(DEFAULT_GAME_CONFIG));
+  // CRITICAL: show game screen FIRST so canvas has dimensions when WebGLRenderer initializes
+  showScreen('game');
   if (!gameInitedScene) initGameScene();
   else { clearGameScene(); applyMap(); rebuildCrowd(); resizeBall(); }
   gameScores = [0, 0];
@@ -3645,7 +3649,6 @@ function hostStartGame(){
   resetPositions();
   // Tell clients to start with config
   broadcastToClients({ type: 'gameStart', config: currentGameConfig });
-  showScreen('game');
   gameLoopRunning = true;
   playWhistle();
   triggerCommentary('start');
@@ -3681,6 +3684,8 @@ function clearGameScene(){
 function startLocal2P(){
   mode = 'local';
   if (!currentGameConfig) currentGameConfig = JSON.parse(JSON.stringify(DEFAULT_GAME_CONFIG));
+  // CRITICAL: show game screen FIRST so canvas has dimensions
+  showScreen('game');
   if (!gameInitedScene) initGameScene();
   else { clearGameScene(); applyMap(); rebuildCrowd(); resizeBall(); }
   gameScores = [0, 0];
@@ -3695,7 +3700,6 @@ function startLocal2P(){
   const p2 = buildPlayerObject(opponentSkin, 1, 1, true, opponentProfile);
   players = [p1, p2];
   resetPositions();
-  showScreen('game');
   gameLoopRunning = true;
   playWhistle();
   gameLoop();
@@ -4581,7 +4585,7 @@ function init(){
   window.__goofy_inited = true;
   const fallback = document.getElementById('js-fallback');
   if (fallback) fallback.style.display = 'none';
-  console.log('%c[Goofy Foot V8] init() terminé avec succès', 'background:#3D9F4E;color:white;padding:4px 10px;border-radius:4px;font-weight:bold;');
+  console.log('%c[Goofy Foot V9] init() terminé avec succès', 'background:#3D9F4E;color:white;padding:4px 10px;border-radius:4px;font-weight:bold;');
 
   // === DIAGNOSTIC FINAL ===
   console.log('%c=== DIAGNOSTIC ÉCRANS ===', 'background:#7B3FBF;color:white;padding:4px 10px;');
