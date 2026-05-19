@@ -6,10 +6,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Goofy Foot ⚽ — V9</title>
+<title>Goofy Foot ⚽ — V10</title>
 <script>
 // Earliest possible diagnostic — runs before anything else
-console.log('%c[Goofy Foot V9] HTML loaded — début du parsing', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
+console.log('%c[Goofy Foot V10] HTML loaded — début du parsing', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
 window.__goofy_started = true;
 window.addEventListener('error', function(e){
   console.error('[Goofy Foot] ERREUR:', e.message, 'à', e.filename, ':', e.lineno);
@@ -319,6 +319,8 @@ h2 {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  width: 100%;
+  min-height: 700px;
 }
 .scoreboard {
   display: flex;
@@ -338,8 +340,9 @@ h2 {
 .team-tag.red { background: var(--red); }
 .game-canvas-wrap {
   position: relative;
-  width: 100%;
-  max-width: 1100px;
+  width: 1100px;
+  max-width: 100%;
+  min-height: 700px;
 }
 #game-canvas {
   width: 100%;
@@ -1392,7 +1395,7 @@ function bootstrap(){
   if (typeof THREE === 'undefined' || typeof Peer === 'undefined') {
     setTimeout(bootstrap, 60); return;
   }
-  console.log('%cGoofy Foot V9 — démarrage', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
+  console.log('%cGoofy Foot V10 — démarrage', 'background:#FCC419;color:#171717;padding:4px 10px;border-radius:4px;font-weight:bold;');
   try { init(); } catch(e){ showFatalError('[init] ' + e.message + '\n\n' + e.stack); }
 }
 
@@ -1954,16 +1957,20 @@ function updateControlsHint(){
 let gameFieldMat, gameStripeMat, gameLineMat, gamePostMat, gameNetMat, gameCrowdGroup;
 
 function initGameScene(){
-  canvas.style.width = '1100px';
-canvas.style.height = '700px';
-canvas.style.maxWidth = '100%';
-canvas.style.maxHeight = 'calc(100vh - 200px)';
   console.log('[initGameScene] start');
   const canvas = document.getElementById('game-canvas');
   console.log('  canvas element:', !!canvas, 'size:', canvas?.offsetWidth + 'x' + canvas?.offsetHeight);
+  // CRITICAL: force explicit display dimensions BEFORE creating renderer
+  // Without this, the canvas can stay at 0x0 because its CSS sizing depends on
+  // its parent which depends on its content (circular dependency with empty canvas)
+  canvas.style.width = '1100px';
+  canvas.style.height = '700px';
+  canvas.style.maxWidth = '100%';
+  canvas.style.maxHeight = 'calc(100vh - 200px)';
   gameRen = new THREE.WebGLRenderer({canvas, antialias:true});
   gameRen.setPixelRatio(window.devicePixelRatio||1);
-  gameRen.setSize(1100, 700, false);
+  gameRen.setSize(1100, 700, false); // false: don't override our inline style
+  console.log('  → canvas size after force:', canvas.offsetWidth + 'x' + canvas.offsetHeight);
   gameScene = new THREE.Scene();
   const map = MAPS[currentGameConfig.mapId] || MAPS.classic;
   gameScene.background = new THREE.Color(map.skyColor);
@@ -4589,7 +4596,7 @@ function init(){
   window.__goofy_inited = true;
   const fallback = document.getElementById('js-fallback');
   if (fallback) fallback.style.display = 'none';
-  console.log('%c[Goofy Foot V9] init() terminé avec succès', 'background:#3D9F4E;color:white;padding:4px 10px;border-radius:4px;font-weight:bold;');
+  console.log('%c[Goofy Foot V10] init() terminé avec succès', 'background:#3D9F4E;color:white;padding:4px 10px;border-radius:4px;font-weight:bold;');
 
   // === DIAGNOSTIC FINAL ===
   console.log('%c=== DIAGNOSTIC ÉCRANS ===', 'background:#7B3FBF;color:white;padding:4px 10px;');
