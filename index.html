@@ -1954,6 +1954,10 @@ function updateControlsHint(){
 let gameFieldMat, gameStripeMat, gameLineMat, gamePostMat, gameNetMat, gameCrowdGroup;
 
 function initGameScene(){
+  canvas.style.width = '1100px';
+canvas.style.height = '700px';
+canvas.style.maxWidth = '100%';
+canvas.style.maxHeight = 'calc(100vh - 200px)';
   console.log('[initGameScene] start');
   const canvas = document.getElementById('game-canvas');
   console.log('  canvas element:', !!canvas, 'size:', canvas?.offsetWidth + 'x' + canvas?.offsetHeight);
